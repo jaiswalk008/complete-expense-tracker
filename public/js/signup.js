@@ -9,8 +9,16 @@ async function addUser(e){
         password : e.target.password.value
     }
     try{
-        const user = axios.post('http://localhost:3000/signup',userDetails);
-        form.reset();
+        const res =await  axios.post('http://localhost:3000/signup',userDetails);
+        if(res.data.userFound){
+            //if user exist
+            document.getElementById('error').style.display='block';
+        }
+        else{ 
+            //if the user changes the email id and then submits then the error should not be displayed
+            document.getElementById('error').style.display='none';
+            form.reset();
+        }
     }
     catch(err){console.log(err);}
 }
