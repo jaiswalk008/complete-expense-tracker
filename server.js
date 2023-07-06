@@ -3,14 +3,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const server = express();
 const sequelize = require('./utils/database');
-const userSignupRoutes = require('./routes/userSignupRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 server.use(cors());
 server.use(bodyParser.urlencoded({extended:false}));
 server.use(bodyParser.json({extended:false}));
 
-//signup route
-server.use('/signup',userSignupRoutes)
+//user login and signup route
+server.use(userRoutes);
 
 
 async function startServer (){

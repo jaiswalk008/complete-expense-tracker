@@ -1,28 +1,28 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>signup</title>
+    <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="../public/css/signup.css">
 </head>
 <body>
     <div class="container p-3 mt-5 d-flex flex-column align-content-center ">
-        <h4 id="error">Email already exist!!!</h4>
-        <form class="form">
-            <label class="form-label" for="name">Name</label>
-            <input class="form-control" type="text" id="name" name="name" required>
+        <h4 id="error"></h4>
+        <form class="login-form">
             <label class="form-label" for="email">Email</label>
             <input class="form-control" type="email" id="email" name="email" required>
             <label class="form-label" for="password">password</label>
             <input class="form-control" type="password" name="password" id="password" required>
-            <button class="btn btn-primary w-100  mt-3" type="submit">signup</button> 
+            <button class="btn btn-primary w-100  mt-3" type="submit">Login</button> 
         </form>
-        <a class="text-md-center m-2 " href="login.html">click here to login</a>
+        
+        
+        
     </div>
-    <script src="../public/js/signup.js"></script>
+    <script src="../public/js/login.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
 </body>
 </html>
