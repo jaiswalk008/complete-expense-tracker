@@ -18,6 +18,8 @@ async function addUser(e){
             //if the user changes the email id and then submits then the error should not be displayed
             document.getElementById('error').style.display='none';
             form.reset();
+            //after signup redirecting for login
+            window.location.replace('/views/login.html');
         }
     }
     catch(err){console.log(err);}

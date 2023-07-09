@@ -12,8 +12,10 @@ async function userLogin(e) {
     const res = await axios.post('http://localhost:3000/login/', userDetails);
     if (res) {
       error.style.display='none';
-      alert('user login successful')
+      
       form.reset();
+      //changing url to redirect 
+      window.location.href = '/views/addExpense.html';
     }
   } catch (err) { 
     if(err.response.status===404){
