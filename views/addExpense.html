@@ -10,25 +10,32 @@
     
 </head>
 <body>
-    <div class="container-fluid p-4">
+    <header>
+        <h2>Expense Tracker</h2>
+    </header>
+    <div class="container d-flex justify-content-evenly  p-4">
         <form  id="expense-form">
-            <label for="expense"  class="form-label">Enter Expense Amount: </label>
-            <input type="number" id="expense" class="form-control-sm" required> 
-            <label for="description" class="form-label p-1">Choose a description: </label>
-            <input type="text" id="description"  class="form-control-sm" required>
-            <label for="category" class="form-label p-1">Choose a category</label>
-            <select name="category" id="category">
-                <option value="movie">Movie</option>
-                <option value="food">Food</option>
-                <option value="fuel">Fuel</option>
-            </select>
-            <button type="submit" class="btn btn-sm btn-dark">Add Expense</button>
-        </form>
-    </div>
-    <div class="container-fluid p-4">
-        <ul class="expense-list "> </ul>
+            <div class="d-flex  justify-content-center flex-column ">
+                <label for="expense"  class="form-label">Enter Expense Amount: </label>
+                <input type="number" id="expense" class="form-control-sm" required> 
+                <label for="description" class="form-label p-1">Choose a description: </label>
+                <input type="text" id="description"  class="form-control-sm" required>
+                <label for="category" class="form-label p-1">Choose a category</label>
+                <select name="category" class="w-100 mb-3" id="category">
+                    <option value="movie">Movie</option>
+                    <option value="food">Food</option>
+                    <option value="fuel">Fuel</option>
+                </select>
+                <button type="submit" class="btn btn-sm btn-dark">Add Expense</button>
 
+            </div>
+        </form>
+        
+        <ul class="expense-list "> </ul>
+                
+        
     </div>
+    
     <script src="../public/js/expense.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
 
