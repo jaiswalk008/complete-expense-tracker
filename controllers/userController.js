@@ -23,7 +23,7 @@ exports.addUser = async (req,res) =>{
     }
     catch(err){console.log(err)}
 }
-function generateAccessToken(id){
+function generateAccessToken(id,name){
   return jwt.sign({userId:id} , /*secret key = */ 'jdgbdffdf25df64v68f29s2f98sdf29dsv4f82v');
 }
 /* bcrypt is one way encryption
@@ -44,7 +44,7 @@ exports.loginUser = async (req, res) => {
             throw new Error('Something went wrong');
           }
           else if(result===true){
-            res.status(200).json({success: true, message: 'Log in Success' ,token : generateAccessToken(user.id)});
+            res.status(200).json({success: true, message: 'Log in Success' ,token : generateAccessToken(user.id ), "username": user.name});
           }
           else {
             res.status(401).json({success: false, message: 'password incorrect!!'});
