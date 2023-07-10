@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 exports.addUser = async (req,res) =>{
     //getting the user details
     const userDetails = {...req.body};
@@ -22,6 +23,15 @@ exports.addUser = async (req,res) =>{
     }
     catch(err){console.log(err)}
 }
+function generateAccessToken(id){
+  return jwt.sign({userId:id} , /*secret key = */ 'jdgbdffdf25df64v68f29s2f98sdf29dsv4f82v');
+}
+/* bcrypt is one way encryption
+jwt is a two way encryption
+we call accesstoken when the user has loggedin correctly and we send the token
+We dont send the userId directly because through that anybody can then change the content of that user
+iat - issuing time is also attached to the payload so that tokens can be different
+ */
 exports.loginUser = async (req, res) => {
     const userDetails = req.body;
     try {
@@ -34,7 +44,7 @@ exports.loginUser = async (req, res) => {
             throw new Error('Something went wrong');
           }
           else if(result===true){
-            res.status(200).json({success: true, message: 'Log in Success'});
+            res.status(200).json({success: true, message: 'Log in Success' ,token : generateAccessToken(user.id)});
           }
           else {
             res.status(401).json({success: false, message: 'password incorrect!!'});

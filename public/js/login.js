@@ -12,8 +12,8 @@ async function userLogin(e) {
     const res = await axios.post('http://localhost:3000/login/', userDetails);
     if (res) {
       error.style.display='none';
-      
-      form.reset();
+      console.log(res.data);
+      localStorage.setItem('token',res.data.token);
       //changing url to redirect 
       window.location.href = '/views/addExpense.html';
     }
@@ -25,6 +25,5 @@ async function userLogin(e) {
       error.innerText=err.response.data.message;
     }else console.log(err);
     error.style.display='block';
-     
   }
 }
