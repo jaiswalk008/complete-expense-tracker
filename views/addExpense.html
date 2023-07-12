@@ -12,38 +12,43 @@
 <body>
     <header>
         <h2 class="title">Expense Tracker</h2>
-        <h2 class="user-name"></h2>
+        <h2 class="d-flex justify-content-center align-content-center user-name"></h2>
     </header>
-    <div class="container d-flex justify-content-evenly flex-column flex-md-row  p-4">
-        <form  id="expense-form">
-            <div class="d-flex  justify-content-center flex-column ">
-                <label for="expense"  class="form-label">Enter Expense Amount: </label>
-                <input type="number" id="expense" class="form-control" required> 
-                <label for="description" class="form-label p-1">Choose a description: </label>
-                <input type="text" id="description"  class="form-control" required>
-                <label for="category" class="form-label p-1">Choose a category</label>
-                <select name="category" class="w-100 mb-3" id="category" required>
-                    <option value="movie">Movie</option>
-                    <option value="food">Food</option>
-                    <option value="fuel">Fuel</option>
-                    <option value="electricity">Electricity</option>
-                    <option value="clothing">Clothing</option>
-                    <option value="bills">Bills</option>
-                    <option value="tarvel">Travel</option>
-                    <option value="other">Other</option>
-                </select>
-                <button type="submit" class="btn btn-sm btn-dark">Add Expense</button>
+    
+    <div class="d-flex justify-content-center align-content-center flex-column">
+        <div class="text-center btn-container">
+            <button id="rzp-button" class="btn w-50  btn-dark mt-2"><img src="../assets/images/membership-logo.png" alt="membership">Buy premium Membership</button>
+        </div>
+        <div class="container d-flex justify-content-evenly flex-column flex-md-row  p-4">
+            <form  id="expense-form">
+                <div class="d-flex  justify-content-center flex-column ">
+                    <label for="expense"  class="form-label">Enter Expense Amount: </label>
+                    <input type="number" id="expense" class="form-control" required> 
+                    <label for="description" class="form-label p-1">Choose a description: </label>
+                    <input type="text" id="description"  class="form-control" required>
+                    <label for="category" class="form-label p-1">Choose a category</label>
+                    <select name="category" class="w-100 mb-3" id="category" required>
+                        <option value="movie">Movie</option>
+                        <option value="food">Food</option>
+                        <option value="fuel">Fuel</option>
+                        <option value="electricity">Electricity</option>
+                        <option value="clothing">Clothing</option>
+                        <option value="bills">Bills</option>
+                        <option value="tarvel">Travel</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-dark">Add Expense</button>
+                    
+                </div>
+            </form>    
+            <ul class="expense-list m-3"></ul> 
 
-            </div>
-        </form>
-        
-        <ul class="expense-list m-3"></ul> 
-            
+        </div>
         
     </div>
-    
     <script src="../public/js/expense.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 </body>
 </html>

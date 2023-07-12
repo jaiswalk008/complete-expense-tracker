@@ -2,7 +2,8 @@ const expenseForm = document.getElementById('expense-form');
 expenseForm.addEventListener('submit', addExpense);
 const list =document.querySelector('.expense-list');
 const token = localStorage.getItem('token');
-
+const rzpBtn = document.getElementById('rzp-button');
+rzpBtn.addEventListener('click',rzpTransaction)
 // function to add list elemenst
 function addExpenseInfo(info){
     
@@ -10,11 +11,12 @@ function addExpenseInfo(info){
     expense.id = info.id;
     //adding onClick handlers on edit button and delete an slo passing the id of expense as a parameter
     expense.innerHTML=`<span>${info.amount} - ${info.description} - ${info.category}</span>
-    <button onClick="editExpense(${info.id})" class="edit btn-danger"><i class="bi bi-pencil-square"></i></button>
+    <button onClick="editExpense(${info.id})" class="edit btn-danger"><i class="bi bi-pencil-square"></i></button> 
     <button onClick="deleteExpense(${info.id})" class="delete btn-dark"><i class="bi bi-trash"><i/></button>`;
     list.appendChild(expense);
     list.style.display ='block';
 }
+
 //function to add expense
 async function addExpense(e){
     e.preventDefault();
@@ -33,17 +35,57 @@ async function addExpense(e){
 
     expenseForm.reset();
 }
+
+//razorpay action
+async function rzpTransaction(e){
+    
+
+    const response = await axios.get('http://localhost:3000/purchase/premiummembership',{headers:{'Authorization':token}});
+    //console.log(response);
+    //we dont pass the amount from frontend because its easily editable
+    const options ={
+        "key":response.data.key_id,
+        "order_id":response.data.order.id,
+        //this handler function will handle the success payment
+        "handler":async function (response){
+            await axios.post('http://localhost:3000/purchase/updatetransactionstatus',{
+                order_id:options.order_id,
+                payment_id:response.razorpay_payment_id,
+                success:true
+            },{headers:{'Authorization':token}});
+            document.querySelector('.btn-container').style.display='none';
+            document.querySelector('.premium-img').style.display='block';
+            alert('You are a premium user');
+            
+        }
+    }
+    const rzp = new Razorpay(options);
+    rzp.open();
+    e.preventDefault();
+    //if payment fails below code will be executed
+    rzp.on('payment.failed' ,async  function(response){
+        const res = await axios.post('http://localhost:3000/purchase/updatetransactionstatus',{
+                order_id:options.order_id,
+                payment_id:response.razorpay_payment_id,
+                success:false
+            },{headers:{'Authorization':token}});
+        alert('something went wrong')
+    })
+}
+
 window.addEventListener('DOMContentLoaded',async () =>{
     const userName = document.querySelector('.user-name');
     
-    userName.innerHTML = `${localStorage.getItem('user-name')}<i onClick="logout()" class="bi bi-power"></i>`
+    userName.innerHTML = `${localStorage.getItem('user-name')} <img class="premium-img" title="premium member" src="../assets/images/membership-logo.png" alt="membership">  <i title="logout" onClick="logout()" class="bi bi-power"></i>
+    `
     try{
         const expenseDetails = await axios.get('http://localhost:3000/expense/getExpense',{
             headers:{'Authorization':token}
         });
         //using HOF as data is in array 
-
-        expenseDetails.data.forEach((e) => addExpenseInfo(e))
+        if(!expenseDetails.data.premium) document.querySelector('.btn-container').style.display='block';
+        else document.querySelector('.premium-img').style.display='block';
+        expenseDetails.data.expense.forEach((e) => addExpenseInfo(e))
     }catch(err){console.log(err)}
 })
 //editing the expense
@@ -58,9 +100,7 @@ async function editExpense(id){
         document.getElementById('category').value = expense.data.category;
         //calling delete function to remove that expense
         deleteExpense(id);
-    }catch(err){console.log(err)};
-    
-
+    }catch(err){console.log(err)};  
 }
 //deleting the expense
 async function deleteExpense(id){

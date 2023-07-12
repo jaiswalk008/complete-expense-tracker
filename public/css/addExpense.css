@@ -3,7 +3,7 @@
     padding: .25rem .5rem;
     font-size: .875rem;
     border-radius: .2rem;
-    border: 3px solid black;
+    border: 2px solid rgb(57, 56, 56);
    
 }
 li{
@@ -19,7 +19,6 @@ header{
 
 .title{
     padding:10px;
-    
 }
 header > span{
     padding-left: 5px;
@@ -37,27 +36,39 @@ li > span{
 
 .form-control:focus {
     
-    border-color: rgb(0, 0, 0) !important;
-    box-shadow: 0 0 0 0.2rem rgb(0,0,0) !important;
+    border-color: rgb(59, 58, 58) !important;
+    box-shadow: 0 0 0 0.2rem rgb(44, 44, 44) !important;
 }
 
 .user-name{
     padding: 15px;
-    font-size: calc(1rem + .9vw);
+    font-size: calc(.90rem + .9vw);
 }
 .user-name >i{
     margin-left: 10px;   
 }
 
 .bi-power {
-    cursor: pointer;
-    padding: 5px;
+    cursor: pointer;    
     border-radius: 4px;
     transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
   }
-  
+  .premium-img{
+    display: none;
+    margin : 5px 0px 0px 5px;
+  }
   .bi-power:hover {
     background-color: #4c4c4c;
     color: #fff;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   }
+  .btn-container{
+    display: none;
+  }
+  img{
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+  }
+ 
+  

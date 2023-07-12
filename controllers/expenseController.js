@@ -5,7 +5,8 @@ exports.getExpense = async (req,res) =>{
     
     try{
         const expenses = await req.user.getExpenses();
-        res.status(200).json(expenses);
+        console.log(req.user.premium)
+        res.status(200).json({"expense":expenses , "premium":req.user.premium});
     }
     catch(err){console.log(err);}
 

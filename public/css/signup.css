@@ -29,3 +29,14 @@ a:hover{
     border-color: rgb(125, 125, 125) !important;
     box-shadow: 0 0 0 0.2rem rgba(126, 126, 126, 0.686) !important;
 }
+header{
+    background-color: rgb(35, 35, 35);
+    margin-top: 1px;
+    display: flex;
+    justify-content: space-between;
+    color: beige;
+}
+
+.title{
+    padding:10px;
+} 
