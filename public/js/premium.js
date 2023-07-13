@@ -4,7 +4,6 @@ let flag = false;
 async function showLeaderBoard(){
     try{
         const res = await axios.get('http://localhost:3000/premium/leaderboard');
-        
         display(res.data);
     }catch(err){console.log(err);}
 }
@@ -15,6 +14,7 @@ function display(data){
         list.innerHTML='';
         data.forEach(element => {
             const li = document.createElement('li');
+            if(!element.total) element.total=0;
             li.innerHTML=`<span>${element.name} - ${element.total}</span>`;
             list.appendChild(li);
         });
@@ -22,6 +22,4 @@ function display(data){
     }else{
         list.style.display = 'none';
     }
-
-
 }
