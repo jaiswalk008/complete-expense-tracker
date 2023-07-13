@@ -6,6 +6,7 @@ const sequelize = require('./utils/database');
 const userRoutes = require('./routes/userRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
 const purchaseRoutes = require('./routes/purchase');
+const premiumRoutes = require('./routes/premiumRoutes');
 
 server.use(cors());
 server.use(bodyParser.urlencoded({extended:false}));
@@ -19,6 +20,7 @@ server.use(userRoutes);
 
 server.use('/expense',expenseRoutes);
 server.use('/purchase',purchaseRoutes);
+server.use('/premium',premiumRoutes);
 //creating association between user and expense
 // A user can have many expenses but each expense will belong a single user
 // So - one to many relationship

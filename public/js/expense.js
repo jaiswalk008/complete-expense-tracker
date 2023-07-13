@@ -4,6 +4,7 @@ const list =document.querySelector('.expense-list');
 const token = localStorage.getItem('token');
 const rzpBtn = document.getElementById('rzp-button');
 rzpBtn.addEventListener('click',rzpTransaction)
+
 // function to add list elemenst
 function addExpenseInfo(info){
     
@@ -11,7 +12,7 @@ function addExpenseInfo(info){
     expense.id = info.id;
     //adding onClick handlers on edit button and delete an slo passing the id of expense as a parameter
     expense.innerHTML=`<span>${info.amount} - ${info.description} - ${info.category}</span>
-    <button onClick="editExpense(${info.id})" class="edit btn-danger"><i class="bi bi-pencil-square"></i></button> 
+    <br><button onClick="editExpense(${info.id})" class="edit  btn-danger"><i class="bi bi-pencil-square"></i></button> 
     <button onClick="deleteExpense(${info.id})" class="delete btn-dark"><i class="bi bi-trash"><i/></button>`;
     list.appendChild(expense);
     list.style.display ='block';
@@ -55,7 +56,12 @@ async function rzpTransaction(e){
             },{headers:{'Authorization':token}});
             document.querySelector('.btn-container').style.display='none';
             document.querySelector('.premium-img').style.display='block';
-            alert('You are a premium user');
+            const notification = document.querySelector('.premium-notification');
+            notification.innerText ='Your are a premium user now';
+            document.querySelector('.leaderboard').style.display= 'block';
+            setTimeout(()=>{
+                notification.innerText='';
+            },3000);
             
         }
     }
@@ -84,7 +90,10 @@ window.addEventListener('DOMContentLoaded',async () =>{
         });
         //using HOF as data is in array 
         if(!expenseDetails.data.premium) document.querySelector('.btn-container').style.display='block';
-        else document.querySelector('.premium-img').style.display='block';
+        else {
+            document.querySelector('.leaderboard').style.display= 'block';
+            document.querySelector('.premium-img').style.display='block';
+        }
         expenseDetails.data.expense.forEach((e) => addExpenseInfo(e))
     }catch(err){console.log(err)}
 })
@@ -117,4 +126,10 @@ async function deleteExpense(id){
 }
 function logout(){
     window.location.replace('/views/login.html');
+}
+async function showLeaderBoard(){
+    try{
+        const res = await axios.get('http://localhost:3000/premium/leaderboard');
+        console.log(res.data)
+    }catch(err){console.log(err);}
 }
