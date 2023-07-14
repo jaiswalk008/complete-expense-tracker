@@ -1,6 +1,11 @@
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const sib = require('sib-api-v3-sdk');
+require('dotenv').config();
+const axios =require('axios');
+
+
 exports.addUser = async (req,res) =>{
     //getting the user details
     const userDetails = {...req.body};
@@ -60,4 +65,27 @@ exports.loginUser = async (req, res) => {
       res.status(500).json({ message: 'Internal server error!' });
     }
   };
-  
+  exports.forgotPassword = async (req,res) =>{
+    const defaultClient = sib.ApiClient.instance;
+    var apiKey = defaultClient.authentications['api-key'];
+    apiKey.apiKey = process.env.EMAIL_API_KEY;
+    const apiInstance = new sib.TransactionalEmailsApi();
+
+    let sendSmtpEmail = new sib.SendSmtpEmail(); // SendSmtpEmail | Values to send a transactional email
+    const sender ={ name:'Expense Tracker',email: 'jaiskaran008@gmail.com'};
+    sendSmtpEmail = {
+        sender,
+        to: [{
+            email: req.body.email
+        }], 
+        subject : 'Password Reset',
+        textContent: `Click the link below to reset your password.`
+    };
+    try {
+      const result = await apiInstance.sendTransacEmail(sendSmtpEmail);
+      
+    } catch (error) {
+      console.log(error);
+    }
+
+  }

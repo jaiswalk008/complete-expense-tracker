@@ -4,6 +4,12 @@
     width: 40%;
     height: 50%;
 }
+.message-alert{
+    border: 1px solid #e6db55;
+    background-color: #ffffe0;
+    padding: 15px 30px 15px 15px;
+    margin: 20px 0;
+}
 #error{
     color:red;
     font-family: Arial, Helvetica, sans-serif;
