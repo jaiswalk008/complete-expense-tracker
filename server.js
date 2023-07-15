@@ -15,6 +15,7 @@ server.use(bodyParser.json({extended:false}));
 const User = require('./models/user');
 const Expense = require('./models/expense');
 const Order = require('./models/order');
+const ResetPassword = require('./models/forgotPasswordRequests')
 //user login and signup route
 server.use(userRoutes);
 
@@ -30,6 +31,9 @@ Expense.belongsTo(User);
 
 User.hasMany(Order);
 Order.belongsTo(User);
+
+User.hasMany(ResetPassword);
+ResetPassword.belongsTo(User);
 
 async function startServer (){
     try{

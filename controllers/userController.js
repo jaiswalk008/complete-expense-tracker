@@ -3,8 +3,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const sib = require('sib-api-v3-sdk');
 require('dotenv').config();
-const axios =require('axios');
-
+const ResetPassword = require('../models/forgotPasswordRequests');
+const { v4: uuidv4 } = require('uuid');
+const path = require('path');
 
 exports.addUser = async (req,res) =>{
     //getting the user details
@@ -65,13 +66,19 @@ exports.loginUser = async (req, res) => {
       res.status(500).json({ message: 'Internal server error!' });
     }
   };
+  //controller for sending email when the user enters email and wants to reset password
   exports.forgotPassword = async (req,res) =>{
+    //getting a new uuid
+    const uuid = uuidv4();
+    
+    
     const defaultClient = sib.ApiClient.instance;
     var apiKey = defaultClient.authentications['api-key'];
     apiKey.apiKey = process.env.EMAIL_API_KEY;
-    const apiInstance = new sib.TransactionalEmailsApi();
 
+    const apiInstance = new sib.TransactionalEmailsApi();
     let sendSmtpEmail = new sib.SendSmtpEmail(); // SendSmtpEmail | Values to send a transactional email
+
     const sender ={ name:'Expense Tracker',email: 'jaiskaran008@gmail.com'};
     sendSmtpEmail = {
         sender,
@@ -79,13 +86,67 @@ exports.loginUser = async (req, res) => {
             email: req.body.email
         }], 
         subject : 'Password Reset',
-        textContent: `Click the link below to reset your password.`
+        htmlContent: `<html><head></head><body><a  href="http://localhost:3000/password/resetpassword/${uuid}">Click to reset your password</a>`
     };
-    try {
-      const result = await apiInstance.sendTransacEmail(sendSmtpEmail);
-      
-    } catch (error) {
-      console.log(error);
-    }
+    
+    try{
+      let user = await User.findOne({where : { email : req.body.email }});
+      //if the user exist then only send the email
+      if(user){
+        
+        user = {...user.dataValues};
+        try {
+          // res.sendFile(path.join(__dirname,'..','views','mailSent.html'));
+          const resetPassword = await ResetPassword.create({ id: uuid, userId: user.id });
+          
+          const result = await apiInstance.sendTransacEmail(sendSmtpEmail);
+          res.json({message:'sent mail successfully'});
+          
+        } catch (error) {
+          res.status(400).json({'message':'something went wrong'});
+        }
+      }else res.status(400).json({"message":"user not found"});
+    
+    }catch(err){res.status(400).json(err)}
 
+  }
+  //controller which recieves the request when the user clicks on the reset
+  //password email link
+  exports.resetPassword =async (req,res) =>{
+    const uuid = req.params.uuid;
+   
+    const result = await ResetPassword.findByPk(uuid);
+    // console.log(result)
+    if(result && result.isActive){
+      res.sendFile(path.join(__dirname,'..','views','resetPassword.html'));
+      // res.redirect('/password/updatepassword');
+    }
+    else{
+      const htmlContent = `<html><head></head><body><h1>This Link has already been used.</h1><a href="http://127.0.0.1:5500/views/passwordRecovery.html">Click here to reset password</body></html>`;
+      // Send HTML content in a separate response
+      res.send(htmlContent);    
+    }
+  }
+  //controller for updating the password
+  exports.updatePassword = async (req,res)=>{
+    const password = req.body.password;
+   
+    const saltRounds = 10;
+    const result  = await ResetPassword.findByPk(req.body.uuid);
+ 
+    const user = await User.findByPk(result.dataValues.userId);
+    
+    bcrypt.hash(password,saltRounds, async (err,hash)=>{
+      if(err){
+        console.log(err);
+      }
+      try {
+        await User.update({password: hash} ,{where:{id:result.dataValues.userId}});
+        await ResetPassword.update({ isActive: false },{where:{userId:result.dataValues.userId}});
+        console.log('password updated');
+      } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Error occurred while updating the password.' });
+      }
+    }) 
   }
