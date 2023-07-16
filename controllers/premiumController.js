@@ -11,3 +11,6 @@ exports.showLeaderBoard = async (req,res) =>{
     } 
     catch(err){console.log(err);}
 }
+exports.getReport = (req,res) =>{
+  
+}

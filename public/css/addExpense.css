@@ -46,6 +46,16 @@ header > span{
 }
 .expense-list{
     display: none;
+    border: 1.5px solid black;
+    border-radius: 10px;
+    height: 200px;
+    overflow-y: scroll;
+}
+.expense-container{
+    height:auto;
+} 
+#download{
+    display: none;
 }
 li > span{
     margin-right: 3px;

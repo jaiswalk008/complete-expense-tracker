@@ -55,10 +55,10 @@ async function rzpTransaction(e){
                 success:true
             },{headers:{'Authorization':token}});
             document.querySelector('.btn-container').style.display='none';
-            document.querySelector('.premium-img').style.display='block';
+            showPremiumFeatures();
             const notification = document.querySelector('.premium-notification');
             notification.innerText ='Your are a premium user now';
-            document.querySelector('.leaderboard').style.display= 'block';
+           
             setTimeout(()=>{
                 notification.innerText='';
             },3000);
@@ -79,6 +79,11 @@ async function rzpTransaction(e){
     })
 }
 
+function showPremiumFeatures(){
+    document.querySelector('.leaderboard').style.display= 'block';
+    document.querySelector('.premium-img').style.display='block';
+    document.querySelector('#download').style.display='block';
+}
 window.addEventListener('DOMContentLoaded',async () =>{
     const userName = document.querySelector('.user-name');
     
@@ -91,8 +96,7 @@ window.addEventListener('DOMContentLoaded',async () =>{
         //using HOF as data is in array 
         if(!expenseDetails.data.premium) document.querySelector('.btn-container').style.display='block';
         else {
-            document.querySelector('.leaderboard').style.display= 'block';
-            document.querySelector('.premium-img').style.display='block';
+            showPremiumFeatures();            
         }
         expenseDetails.data.expense.forEach((e) => addExpenseInfo(e))
     }catch(err){console.log(err)}

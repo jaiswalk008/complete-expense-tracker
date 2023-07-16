@@ -1,6 +1,9 @@
 const leaderboardBtn = document.getElementById('leaderboard-btn');
 leaderboardBtn.addEventListener('click',showLeaderBoard);
+const downloadBtn = document.getElementById('download');
+downloadBtn.addEventListener('click',downloadReport);
 let flag = false;
+const token = localStorage.getItem('token');
 async function showLeaderBoard(){
     try{
         const res = await axios.get('http://localhost:3000/premium/leaderboard');
@@ -22,5 +25,16 @@ function display(data){
         list.style.display = 'block';
     }else{
         list.style.display = 'none';
+    }
+}
+async function downloadReport(){
+    try {
+        const res = await axios.get('http://localhost:3000/premium/download', { headers: {"Authorization" : token} })
+        const a = document.createElement("a");
+        a.href = res.data.fileUrl;
+        a.download = 'myexpense.csv';
+        a.click();
+    } catch (err) {
+        console.log(err);
     }
 }
