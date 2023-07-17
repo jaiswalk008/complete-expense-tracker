@@ -16,6 +16,7 @@ const User = require('./models/user');
 const Expense = require('./models/expense');
 const Order = require('./models/order');
 const ResetPassword = require('./models/forgotPasswordRequests')
+const DownloadLogs = require('./models/downloadLogs');
 //user login and signup route
 server.use(userRoutes);
 
@@ -34,6 +35,9 @@ Order.belongsTo(User);
 
 User.hasMany(ResetPassword);
 ResetPassword.belongsTo(User);
+
+User.hasMany(DownloadLogs);
+DownloadLogs.belongsTo(User);
 
 async function startServer (){
     try{

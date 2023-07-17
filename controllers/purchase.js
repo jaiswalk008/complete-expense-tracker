@@ -3,6 +3,7 @@ const Order = require('../models/order');
 // const User = require('../models/user');
 require('dotenv').config()
 
+
 exports.purchasePremium = async (req, res ) =>{
     try {
         const rzp = new Razorpay({

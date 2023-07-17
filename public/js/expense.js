@@ -83,6 +83,7 @@ function showPremiumFeatures(){
     document.querySelector('.leaderboard').style.display= 'block';
     document.querySelector('.premium-img').style.display='block';
     document.querySelector('#download').style.display='block';
+    document.querySelector('#download-logs').style.display='block';
 }
 window.addEventListener('DOMContentLoaded',async () =>{
     const userName = document.querySelector('.user-name');

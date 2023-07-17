@@ -9,7 +9,6 @@
 #leaderboard-btn{
     background-color: rgb(61, 60, 60);
     color:rgb(255, 98, 0);
-   
 }
 .leaderboard-list{
     list-style: decimal;
@@ -17,6 +16,9 @@
     font-family: Arial, Helvetica, sans-serif;
     font-weight:500;
     display: none;
+    border: 2px solid black;
+    border-radius: 10px;
+    
 }
 .leaderboard{
     display: none;
@@ -53,8 +55,15 @@ header > span{
 }
 .expense-container{
     height:auto;
+    display: none;
 } 
-#download{
+.download-logs{
+    border: 2px solid black;
+    border-radius: 10px;
+    display: none;
+}
+
+#download-logs,#download{
     display: none;
 }
 li > span{

@@ -48,16 +48,21 @@
                 <div class="d-flex expense-container justify-content-between flex-column">
                     <ul class="expense-list m-3"></ul> 
                     <button id="download" class="btn btn-dark btn-sm">download expense report</button>
+                    <button id="download-logs" onclick="showDownloadLogs()" class="btn btn-dark btn-sm mt-2">show download logs</button>
                 </div>
             
             </div>
         <div class="text-center leaderboard">
-        <button id="leaderboard-btn" class="btn btn-sm mb-2 w-50">Show LeaderBoard</button>
+            <button id="leaderboard-btn" class="btn btn-sm mb-2 w-25">Show LeaderBoard</button>
        </div>
-       <div class="container-fluid w-50 d-flex justify-content-center align-items-center">
+       <div class="container-fluid w-50 d-flex justify-content-center flex-column align-items-center">
+            
            <ul class="leaderboard-list">
             
            </ul> 
+           <ul class="download-logs mt-2">
+                
+           </ul>
        </div>
         </div>
         <script src="../public/js/expense.js"></script>
