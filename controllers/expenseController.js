@@ -3,11 +3,24 @@ const User = require('../models/user');
 const sequelize = require('../utils/database');
 
 exports.getExpense = async (req,res) =>{
-    
+    const page = +req.query.page || 1;
+    console.log('page='+page)
     try{
-        const expenses = await req.user.getExpenses();
+        const expenses = await req.user.getExpenses({
+            offset: (page - 1) * 3,
+            limit: 3,
+          });
+        const count = await req.user.countExpenses();
 
-        res.status(200).json({"expense":expenses , "premium":req.user.premium});
+        res.status(200).json({"expense":expenses , "premium":req.user.premium,
+        pageData: {
+            currentPage: page,
+            hasNextPage: 3 * page < count,
+            nextPage: page+1,
+            hasPreviousPage: page > 1,
+            previousPage: page - 1
+        }
+        });
     }
     catch(err){console.log(err);}
 

@@ -1,3 +1,4 @@
+
 const expenseForm = document.getElementById('expense-form');
 expenseForm.addEventListener('submit', addExpense);
 const list =document.querySelector('.expense-list');
@@ -32,6 +33,7 @@ async function addExpense(e){
             headers:{'Authorization':token}
         });
         addExpenseInfo(expenseDetails.data);
+
     }catch(err){console.log(err)}
 
     expenseForm.reset();
@@ -91,7 +93,7 @@ window.addEventListener('DOMContentLoaded',async () =>{
     userName.innerHTML = `${localStorage.getItem('user-name')} <img class="premium-img" title="premium member" src="../assets/images/membership-logo.png" alt="membership">  <i title="logout" onClick="logout()" class="bi bi-power"></i>
     `
     try{
-        const expenseDetails = await axios.get('http://localhost:3000/expense/getExpense',{
+        const expenseDetails = await axios.get('http://localhost:3000/expense/getExpense?page=1 ',{
             headers:{'Authorization':token}
         });
         //using HOF as data is in array 
@@ -99,7 +101,9 @@ window.addEventListener('DOMContentLoaded',async () =>{
         else {
             showPremiumFeatures();            
         }
+        console.log(expenseDetails)
         expenseDetails.data.expense.forEach((e) => addExpenseInfo(e))
+        showPagination(expenseDetails.data.pageData);
     }catch(err){console.log(err)}
 })
 //editing the expense
@@ -132,9 +136,40 @@ async function deleteExpense(id){
 function logout(){
     window.location.replace('/views/login.html');
 }
-async function showLeaderBoard(){
-    try{
-        const res = await axios.get('http://localhost:3000/premium/leaderboard');
-        console.log(res.data)
-    }catch(err){console.log(err);}
+function getLiForPagination(page){
+    const li =document.createElement('li');
+    li.className='page-item';
+    const btn = document.createElement('button');
+    btn.className="btn btn-sm btn-dark"
+    btn.innerHTML=page;
+    btn.addEventListener('click', () => getCurrentPageExpense(page));
+    li.appendChild(btn);
+    return li;
+}
+function showPagination(pageData){
+    const pagination = document.querySelector('.pagination');
+    pagination.innerHTML='';
+    if(pageData.hasPreviousPage){
+        const li = getLiForPagination(pageData.previousPage);
+        pagination.appendChild(li);
+    }
+    const newLi = getLiForPagination(pageData.currentPage);
+    pagination.appendChild(newLi);
+    if (pageData.hasNextPage) {
+        const li = getLiForPagination(pageData.nextPage);
+        pagination.appendChild(li);
+    }
+}
+async function getCurrentPageExpense(page) {
+    try {
+        const expenseDetails = await axios.get(`http://localhost:3000/expense/getExpense?page=${page} `,{
+            headers:{'Authorization':token}
+        });
+        console.log(expenseDetails.data);
+        list.innerHTML='';
+        expenseDetails.data.expense.forEach((e) => addExpenseInfo(e))
+        showPagination(expenseDetails.data.pageData);
+    } catch (err) {
+        console.log(err);
+    }
 }

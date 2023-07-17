@@ -12,10 +12,12 @@
     <body>
         <header>
             <h2 class="title">Expense Tracker</h2>
-            <h2 class="d-flex justify-content-center align-content-center user-name"></h2>
+            <h2 class="d-flex justify-content-center align-content-center user-name">
+                
+            </h2>
         </header>
         
-        <div class="d-flex justify-content-center align-content-center flex-column">
+        <div class="d-flex justify-content-end flex-column">
             <div class="text-center btn-container">
                 <button id="rzp-button" class="btn w-50  btn-dark mt-2"><img src="../assets/images/membership-logo.png" alt="membership">Buy premium Membership</button>
                 
@@ -23,7 +25,7 @@
             <div class="text-center text-primary premium-notification" >
                 
             </div>
-            <div class="container d-flex justify-content-evenly flex-column flex-md-row  p-4">
+            <div class="container  d-flex justify-content-evenly flex-column flex-md-row  p-4">
                 <form  id="expense-form">
                     <div class="d-flex  justify-content-center flex-column ">
                         <label for="expense"  class="form-label">Enter Expense Amount: </label>
@@ -45,8 +47,21 @@
                         
                     </div>
                 </form>    
-                <div class="d-flex expense-container justify-content-between flex-column">
+                <div class="d-flex expense-container justify-content-between align-items-center flex-column">
                     <ul class="expense-list m-3"></ul> 
+                    <div class="text-center align-items-center ">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <!-- <li class="page-item"><button>1</button></li>
+                                <li class="page-item"><button>1</button></li>
+                                <li class="page-item"><button>1</button></li> -->
+                            </ul>
+                        </nav>
+
+                    </div>
+                    
+                </div>
+                <div class="d-flex justify-content-center flex-column">
                     <button id="download" class="btn btn-dark btn-sm">download expense report</button>
                     <button id="download-logs" onclick="showDownloadLogs()" class="btn btn-dark btn-sm mt-2">show download logs</button>
                 </div>

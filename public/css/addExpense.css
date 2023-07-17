@@ -6,6 +6,7 @@
     border: 2px solid rgb(57, 56, 56);
    
 }
+
 #leaderboard-btn{
     background-color: rgb(61, 60, 60);
     color:rgb(255, 98, 0);
@@ -50,7 +51,7 @@ header > span{
     display: none;
     border: 1.5px solid black;
     border-radius: 10px;
-    height: 200px;
+    height: 250px;
     overflow-y: scroll;
 }
 .expense-container{
