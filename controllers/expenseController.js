@@ -4,18 +4,19 @@ const sequelize = require('../utils/database');
 
 exports.getExpense = async (req,res) =>{
     const page = +req.query.page || 1;
+    const rows = +req.query.rows; 
     console.log('page='+page)
     try{
         const expenses = await req.user.getExpenses({
-            offset: (page - 1) * 3,
-            limit: 3,
+            offset: (page - 1) * rows,
+            limit: rows,
           });
         const count = await req.user.countExpenses();
 
         res.status(200).json({"expense":expenses , "premium":req.user.premium,
         pageData: {
             currentPage: page,
-            hasNextPage: 3 * page < count,
+            hasNextPage: rows * page < count,
             nextPage: page+1,
             hasPreviousPage: page > 1,
             previousPage: page - 1

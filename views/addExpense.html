@@ -43,11 +43,21 @@
                             <option value="tarvel">Travel</option>
                             <option value="other">Other</option>
                         </select>
-                        <button type="submit" class="btn btn-sm btn-dark">Add Expense</button>
+                        <button type="submit" class="btn  btn-dark">Add Expense</button>
                         
                     </div>
                 </form>    
                 <div class="d-flex expense-container justify-content-between align-items-center flex-column">
+                    <span>Rows Per page: <select class="mt-2" name="rows" id="rows">
+                        <option  default></option>
+                        <option value="3">3</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                    </select>
+
+                    </span>
+                    
                     <ul class="expense-list m-3"></ul> 
                     <div class="text-center align-items-center ">
                         <nav aria-label="Page navigation example">
@@ -68,16 +78,14 @@
             
             </div>
         <div class="text-center leaderboard">
-            <button id="leaderboard-btn" class="btn btn-sm mb-2 w-25">Show LeaderBoard</button>
+            <button id="leaderboard-btn" class="btn mb-2 w-25">Show LeaderBoard</button>
        </div>
        <div class="container-fluid w-50 d-flex justify-content-center flex-column align-items-center">
             
            <ul class="leaderboard-list">
             
            </ul> 
-           <ul class="download-logs mt-2">
-                
-           </ul>
+           <ul class="download-logs mt-2"></ul>
        </div>
         </div>
         <script src="../public/js/expense.js"></script>

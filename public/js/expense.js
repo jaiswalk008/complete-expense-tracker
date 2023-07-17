@@ -6,6 +6,13 @@ const token = localStorage.getItem('token');
 const rzpBtn = document.getElementById('rzp-button');
 rzpBtn.addEventListener('click',rzpTransaction)
 
+const rowsPerPage = document.getElementById('rows');
+
+rowsPerPage.addEventListener("change", function() {
+    localStorage.setItem('rows',rowsPerPage.value);
+    location.reload();
+})
+
 // function to add list elemenst
 function addExpenseInfo(info){
     
@@ -91,9 +98,14 @@ window.addEventListener('DOMContentLoaded',async () =>{
     const userName = document.querySelector('.user-name');
     
     userName.innerHTML = `${localStorage.getItem('user-name')} <img class="premium-img" title="premium member" src="../assets/images/membership-logo.png" alt="membership">  <i title="logout" onClick="logout()" class="bi bi-power"></i>
-    `
+    `;
+    const rows = localStorage.getItem('rows');
+    if(rows){
+        rowsPerPage.value=rows;
+    }
+    else localStorage.setItem('rows',rowsPerPage.value);
     try{
-        const expenseDetails = await axios.get('http://localhost:3000/expense/getExpense?page=1 ',{
+        const expenseDetails = await axios.get(`http://localhost:3000/expense/getExpense?page=1&rows=${rowsPerPage.value} `,{
             headers:{'Authorization':token}
         });
         //using HOF as data is in array 
@@ -101,7 +113,7 @@ window.addEventListener('DOMContentLoaded',async () =>{
         else {
             showPremiumFeatures();            
         }
-        console.log(expenseDetails)
+    
         expenseDetails.data.expense.forEach((e) => addExpenseInfo(e))
         showPagination(expenseDetails.data.pageData);
     }catch(err){console.log(err)}
@@ -162,7 +174,7 @@ function showPagination(pageData){
 }
 async function getCurrentPageExpense(page) {
     try {
-        const expenseDetails = await axios.get(`http://localhost:3000/expense/getExpense?page=${page} `,{
+        const expenseDetails = await axios.get(`http://localhost:3000/expense/getExpense?page=${page}&rows=${rowsPerPage.value}`,{
             headers:{'Authorization':token}
         });
         console.log(expenseDetails.data);
