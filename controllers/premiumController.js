@@ -11,7 +11,7 @@ exports.showLeaderBoard = async (req,res) =>{
           attributes:['name','totalExpense'],
           order:[['totalExpense','DESC']]
         })
-        res.json(leaderboardResults);
+        res.json({'results':leaderboardResults , "premium":req.user.premium});
     } 
     catch(err){console.log(err);}
 }

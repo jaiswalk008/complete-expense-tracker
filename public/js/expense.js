@@ -5,8 +5,10 @@ const list =document.querySelector('.expense-list');
 const token = localStorage.getItem('token');
 const rzpBtn = document.getElementById('rzp-button');
 rzpBtn.addEventListener('click',rzpTransaction)
-
+let flag2 = false;
 const rowsPerPage = document.getElementById('rows');
+const downloadBtn = document.getElementById('download');
+downloadBtn.addEventListener('click',downloadReport);
 
 rowsPerPage.addEventListener("change", function() {
     localStorage.setItem('rows',rowsPerPage.value);
@@ -89,10 +91,10 @@ async function rzpTransaction(e){
 }
 
 function showPremiumFeatures(){
-    document.querySelector('.leaderboard').style.display= 'block';
+     
     document.querySelector('.premium-img').style.display='block';
-    document.querySelector('#download').style.display='block';
-    document.querySelector('#download-logs').style.display='block';
+    
+     
 }
 window.addEventListener('DOMContentLoaded',async () =>{
     const userName = document.querySelector('.user-name');
@@ -108,9 +110,11 @@ window.addEventListener('DOMContentLoaded',async () =>{
         const expenseDetails = await axios.get(`http://localhost:3000/expense/getExpense?page=1&rows=${rowsPerPage.value} `,{
             headers:{'Authorization':token}
         });
+        localStorage.setItem('premium',expenseDetails.data.premium);
         //using HOF as data is in array 
         if(!expenseDetails.data.premium) document.querySelector('.btn-container').style.display='block';
         else {
+            
             showPremiumFeatures();            
         }
     
@@ -181,6 +185,60 @@ async function getCurrentPageExpense(page) {
         list.innerHTML='';
         expenseDetails.data.expense.forEach((e) => addExpenseInfo(e))
         showPagination(expenseDetails.data.pageData);
+    } catch (err) {
+        console.log(err);
+    }
+}
+async function showDownloadLogs(){
+    
+    try {
+        const downloads = await  axios.get('http://localhost:3000/premium/downloadlogs', { headers: {"Authorization" : localStorage.getItem('token')} })
+        if(localStorage.getItem('premium')=='true') displayDownloads(downloads.data.report);
+        else alert('Buy Premium Membership');
+    } catch (err) {
+        console.log(err)
+    }
+ }
+ 
+ function displayDownloads(data){
+    console.log(data)
+    flag2= !flag2;
+    const downloadList = document.querySelector('.download-logs');
+    
+    if(flag2){
+        downloadList.innerHTML='';
+         
+        if(data.length){
+            data.forEach((element,index) => {
+                const li = document.createElement('li');
+                
+                li.innerHTML=`<span>File${index+1} downloaded on ${element.date.substring(1,11)}</span> <a href="${element.fileUrl}" ><button class="btn btn-sm btn-secondary">download</button></a>`;
+                downloadList.appendChild(li);
+                
+            });
+        }else{
+            const p = document.createElement('p');
+            p.innerText = 'Please download a file first.'
+            downloadList.appendChild(p);
+        }
+        downloadList.style.display = 'block';
+    }else{
+        downloadList.style.display = 'none';
+    }
+}
+
+async function downloadReport(){
+    try {
+        if(localStorage.getItem('premium')=='true'){
+            const res = await axios.get('http://localhost:3000/premium/download', { headers: {"Authorization" : localStorage.getItem('token')} })
+        const a = document.createElement("a");
+        
+        a.href = res.data;
+        a.download = 'myexpense.txt';
+        a.click();
+        }
+        else alert('Buy Premium Membership');
+        
     } catch (err) {
         console.log(err);
     }

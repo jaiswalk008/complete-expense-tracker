@@ -7,10 +7,7 @@
    
 }
 
-#leaderboard-btn{
-    background-color: rgb(61, 60, 60);
-    color:rgb(255, 98, 0);
-}
+
 .leaderboard-list{
     list-style: decimal;
     font-size: larger;
@@ -61,12 +58,17 @@ header > span{
 .download-logs{
     border: 2px solid black;
     border-radius: 10px;
-    display: none;
-}
+    /* display: none;*/
+} 
 
-#download-logs,#download{
+#home:hover,#leaderboard-btn:hover,#download-logs:hover,#download:hover{
+    background-color: rgb(61, 60, 60);
+    color:rgb(255, 98, 0);
+}
+.download-logs {
     display: none;
 }
+ 
 li > span{
     margin-right: 3px;
 }
@@ -78,7 +80,7 @@ li > span{
 }
 
 .user-name{
-    padding: 15px;
+    /* padding: 15px; */
     font-size: calc(.90rem + .9vw);
 }
 .user-name >i{

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeaderBoard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="../public//css//addExpense.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
+    <style>
+        .message-alert{
+        border: 1px solid #e6db55;
+        background-color: #ffffe0;
+        padding: 15px 30px 15px 15px;
+        margin: 20px 0;
+        text-align: center;
+        display: none;
+
+    }
+  
+    </style>
+</head>
+<body>
+    <header>
+        <h2 class="title">Expense Tracker</h2>
+        <ul class="list-unstyled float-end d-flex justify-content-between">
+            <li><button id="home" onclick="window.location.href='http://127.0.0.1:5500/views/addExpense.html'" class="btn btn-dark">Home</button></li>
+            <li><button id="leaderboard-btn"  class="btn btn-dark">LeaderBoard</button></li>
+            <li><button id="download" class="btn btn-dark">Report</button></li>
+            <li><button id="download-logs" onclick="showDownloadLogs()" class="btn btn-dark">Downloads</button></li>
+            <li><h2 class="d-flex justify-content-center align-content-center user-name"></h2></li>
+        </ul>
+        
+    </header>
+    <div class="container mt-5 w-50 d-flex justify-content-center flex-column align-items-center">
+        
+        <ul class="leaderboard-list">
+         
+        </ul> 
+        <ul class="download-logs mt-2"></ul>
+    </div>
+    <div class="d-flex  justify-content-center flex-column align-content-center">
+        <div class="text-center message-alert">
+            You are not a premium member!! click below to buy premium membership
+        </div>
+         
+        <div class="text-center btn-container">
+            <button id="rzp-button" class="btn w-50  btn-dark mt-2"><img src="../assets/images/membership-logo.png" alt="membership">Buy premium Membership</button>
+                
+        </div>
+         
+    </div>
+    <script src="../public//js/premium.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+</body>
+
+</html>
