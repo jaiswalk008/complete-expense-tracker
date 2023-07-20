@@ -1,10 +1,11 @@
 const User = require('../models/user');
-const Expense = require('../models/expense');
 
 require('dotenv').config();
+
 const UserServices = require('../services/userServices')
 const S3Service = require('../services/s3Service');
 const DownloadLogs = require('../models/downloadLogs');
+
 exports.showLeaderBoard = async (req,res) =>{
     try{
         const leaderboardResults = await User.findAll({
@@ -20,7 +21,7 @@ exports.showLeaderBoard = async (req,res) =>{
 exports.getReport = async(req,res) =>{
   try {
     const expenses = await UserServices.getExpenses(req);
-    console.log(expenses);
+ 
     // /const expenseData = expenses.dataValues.map
     //filename should depend on userId
     const userId  = req.user.id;
@@ -35,7 +36,7 @@ exports.getReport = async(req,res) =>{
   }
 }
 exports.getDownloads = async (req,res) =>{
-  console.log(req.user);
+   
   try{
     const downloadLogs = await DownloadLogs.findAll({where:{userId:req.user.id}});
     res.json({'report':downloadLogs});

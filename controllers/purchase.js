@@ -30,9 +30,9 @@ exports.updateTransaction = async (req,res) =>{
     //if payment is successful
     try {
         const {payment_id , order_id,success} = req.body;
-        console.log('success = '+success)
+       
         if(success){
-            console.log('paymentid = ' + payment_id);
+            
             const order =await Order.findOne({where:{orderid : order_id}});
             const updatePaymentId = order.update({paymentid:payment_id , status : "SUCCESSFUL"});
             const updatePremiumStatus = req.user.update({premium: true}) 
@@ -42,7 +42,7 @@ exports.updateTransaction = async (req,res) =>{
         //if payment fails
         else{
             const order =await  Order.findOne({where:{orderid : order_id}});
-            console.log(order);
+             
             const updateStatus=await order.update({paymentid:payment_id, status : "FAILED"});
             return res.status(202).json({success:false , message: "transaction unsuccessful"});
         }

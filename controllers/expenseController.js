@@ -1,11 +1,11 @@
-const Expense = require('../models/expense');
+ 
 const User = require('../models/user');
 const sequelize = require('../utils/database');
 
 exports.getExpense = async (req,res) =>{
     const page = +req.query.page || 1;
     const rows = +req.query.rows; 
-    console.log('page='+page)
+   
     try{
         const expenses = await req.user.getExpenses({
             offset: (page - 1) * rows,
@@ -27,8 +27,7 @@ exports.getExpense = async (req,res) =>{
 
 }
 exports.addExpense = async (req,res) =>{
-    // console.log(req.user.id);
-    console.log(req.body);
+    
     const t =await sequelize.transaction();
     try{
         let currTotal = parseInt(req.user.totalExpense);
@@ -40,7 +39,7 @@ exports.addExpense = async (req,res) =>{
         )
                 //will only result changes in the database if it is committed
         await t.commit();
-        console.log(expense)
+        
         res.status(201).json(expense);
     }
     catch(err){
@@ -65,7 +64,7 @@ exports.deleteExpense = async (req,res) =>{
     try{
         const expense = await req.user.getExpenses({where : {id:expenseId}});
         let currTotal = parseInt(req.user.totalExpense);
-        console.log(currTotal);
+        
         //changing the user's total expenses
         currTotal-=expense[0].amount;
         await User.update(

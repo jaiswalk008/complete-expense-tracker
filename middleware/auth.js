@@ -1,12 +1,13 @@
 /* this is a middleware to check who is login and then changing the req body and passing the controll to expenseController */
 const jwt  = require('jsonwebtoken');
 const User = require('../models/user');
+require('dotenv').config();
 
 const authenticate = async (req,res,next) =>{
     try{
         const token = req.header('Authorization');
-        console.log(token)
-        const result = jwt.verify(token, 'jdgbdffdf25df64v68f29s2f98sdf29dsv4f82v');
+         
+        const result = jwt.verify(token, process.env.JWT_SECRET_KEY);
         console.log('userId :' + result.userId);
         const user = await User.findByPk(result.userId);
         req.user = user;

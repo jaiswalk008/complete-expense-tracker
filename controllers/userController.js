@@ -30,14 +30,9 @@ exports.addUser = async (req,res) =>{
     catch(err){console.log(err)}
 }
 function generateAccessToken(id,name){
-  return jwt.sign({userId:id} , /*secret key = */ 'jdgbdffdf25df64v68f29s2f98sdf29dsv4f82v');
+  return jwt.sign({userId:id} , /*secret key = */ process.env.JWT_SECRET_KEY);
 }
-/* bcrypt is one way encryption
-jwt is a two way encryption
-we call accesstoken when the user has loggedin correctly and we send the token
-We dont send the userId directly because through that anybody can then change the content of that user
-iat - issuing time is also attached to the payload so that tokens can be different
- */
+ 
 exports.loginUser = async (req, res) => {
     const userDetails = req.body;
     try {
