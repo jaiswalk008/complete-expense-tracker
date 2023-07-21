@@ -8,15 +8,19 @@
 }
 
 .leaderboard-list{
-    list-style: decimal;
+    list-style: none;
     font-size: larger;
     font-family: Arial, Helvetica, sans-serif;
     font-weight:500;
     display: none;
+    width: 350px;
     border: 2px solid black;
-    border-radius: 10px;
-    
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding-left: 0;
+    list-style-position: inside;
 }
+
 .leaderboard{
     display: none;
 }
@@ -76,6 +80,13 @@ li{
     color: #ffffff;
     list-style: none; /* Set the disc style for the header */
     
+}
+.leaderboard-list-header{
+    font-weight: bold;
+    background-color: #2e2e2e;
+    padding-left: 0px;
+    color: #ffffff;
+    list-style: none; /* Set the disc style for the header */
 }
 li > span{
     margin-right: 3px;

@@ -63,10 +63,10 @@ function display(data){
     const list = document.querySelector('.leaderboard-list');
     
     // list.innerHTML='';
-    data.forEach(element => {
+    data.forEach((element,index) => {
        
         const li = document.createElement('li');
-        li.innerHTML=`<span>${element.name} - ${element.totalExpense}</span>`;
+        li.innerHTML=`<span>${index+1}. ${element.name} - ${element.totalExpense}</span>`;
         list.appendChild(li);
         
     })
