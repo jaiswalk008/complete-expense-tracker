@@ -26,6 +26,8 @@ function addExpenseInfo(info){
     <button onClick="deleteExpense(${info.id})" class="delete btn-dark"><i class="bi bi-trash"><i/></button>`;
     list.appendChild(expense);
     list.style.display ='block';
+    document.querySelector('.span-expense').style.display='block';
+    
 }
 
 //function to add expense
@@ -69,7 +71,7 @@ async function rzpTransaction(e){
             showPremiumFeatures();
             const notification = document.querySelector('.premium-notification');
             notification.innerText ='Your are a premium user now';
-           
+            localStorage.setItem('premium',true);
             setTimeout(()=>{
                 notification.innerText='';
             },3000);
@@ -93,8 +95,6 @@ async function rzpTransaction(e){
 function showPremiumFeatures(){
      
     document.querySelector('.premium-img').style.display='block';
-    
-     
 }
 window.addEventListener('DOMContentLoaded',async () =>{
     const userName = document.querySelector('.user-name');
@@ -119,9 +119,11 @@ window.addEventListener('DOMContentLoaded',async () =>{
         }
     
         expenseDetails.data.expense.forEach((e) => addExpenseInfo(e))
+         
         showPagination(expenseDetails.data.pageData);
     }catch(err){console.log(err)}
 })
+
 //editing the expense
 async function editExpense(id){
     try{
@@ -149,9 +151,11 @@ async function deleteExpense(id){
     }
     catch(err){console.log(err);}
 }
+
 function logout(){
     window.location.replace('/views/login.html');
 }
+
 function getLiForPagination(page){
     const li =document.createElement('li');
     li.className='page-item';

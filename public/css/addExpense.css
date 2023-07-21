@@ -7,7 +7,6 @@
    
 }
 
-
 .leaderboard-list{
     list-style: decimal;
     font-size: larger;
@@ -26,41 +25,42 @@
 li{
     padding: 10px;
 }
-header{
-    background-color: rgb(35, 35, 35);
-    margin-top: 1px;
-    display: flex;
-    justify-content: space-between;
-    color: beige;
+.navbar{
+    background-color: rgb(35, 35, 35) !important;
+    margin-top: 1px ;
+    color: beige !important;
 }
 
 .title{
     padding:10px;
 }
-header > span{
-    padding-left: 5px;
-    font-family: 'Times New Roman', Times, serif;
-}
+
 .btn:hover{
     background-color: rgb(54, 54, 54) !important;
 }
 .expense-list{
     display: none;
     border: 1.5px solid black;
-    border-radius: 10px;
-    height: 250px;
-    overflow-y: scroll;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    height: fit-content;
+    width: 350px;
+    padding-left: 0;
+    list-style-position: inside;
+    
 }
+
 .expense-container{
     height:auto;
     display: none;
 } 
+ 
 .download-logs{
     border: 2px solid black;
     border-radius: 10px;
     /* display: none;*/
 } 
-
+ 
 #home:hover,#leaderboard-btn:hover,#download-logs:hover,#download:hover{
     background-color: rgb(61, 60, 60);
     color:rgb(255, 98, 0);
@@ -68,11 +68,22 @@ header > span{
 .download-logs {
     display: none;
 }
- 
+.expense-list-header {
+    
+    font-weight: bold;
+    background-color: #2e2e2e;
+    padding-left: 0px;
+    color: #ffffff;
+    list-style: none; /* Set the disc style for the header */
+    
+}
 li > span{
     margin-right: 3px;
 }
 
+#expense-form{
+    width: 350px;
+}
 .form-control:focus {
     
     border-color: rgb(59, 58, 58) !important;
@@ -80,8 +91,9 @@ li > span{
 }
 
 .user-name{
-    /* padding: 15px; */
+    
     font-size: calc(.90rem + .9vw);
+    text-transform: capitalize;
 }
 .user-name >i{
     margin-left: 10px;   

@@ -1,7 +1,8 @@
 .container{
     border: 2px solid black;
     border-radius: 10px;
-    width: 40%;
+    width: 350px;
+    min-width: fit-content;
     height: 50%;
 }
 .message-alert{

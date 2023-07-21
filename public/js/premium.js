@@ -3,13 +3,13 @@
 const leaderboardBtn = document.getElementById('leaderboard-btn');
 
 leaderboardBtn.addEventListener('click',showLeaderBoard);
-const downloadBtn = document.getElementById('download');
-downloadBtn.addEventListener('click',downloadReport);
+const download = document.getElementById('download');
+download.addEventListener('click',downloadReport);
 let flag = true;
 let flag2 = false;
 const rzpBtn2 = document.getElementById('rzp-button');
 rzpBtn2.addEventListener('click',rzpTransaction)
-// const token = localStorage.getItem('token');
+const token = localStorage.getItem('token');
 async function showLeaderBoard(){
     
     try{
@@ -44,7 +44,7 @@ window.addEventListener('DOMContentLoaded',() =>{
 async function downloadReport(){
     try {
         if(localStorage.getItem('premium')=='true'){
-            const res = await axios.get('http://localhost:3000/premium/download', { headers: {"Authorization" : localStorage.getItem('token')} })
+            const res = await axios.get('http://localhost:3000/premium/download', { headers: {"Authorization" : token }})
         const a = document.createElement("a");
         
         a.href = res.data;
@@ -75,7 +75,7 @@ function display(data){
 async function showDownloadLogs(){
     
     try {
-        const downloads = await  axios.get('http://localhost:3000/premium/downloadlogs', { headers: {"Authorization" : localStorage.getItem('token')} })
+        const downloads = await  axios.get('http://localhost:3000/premium/downloadlogs', { headers: {"Authorization" :token} })
         if(localStorage.getItem('premium')=='true') displayDownloads(downloads.data.report);
         else alert('Buy Premium Membership');
     } catch (err) {
@@ -104,7 +104,7 @@ async function showDownloadLogs(){
 //razorpay action
 async function rzpTransaction(e){
     
-    const token = localStorage.getItem('token')
+    
     const response = await axios.get('http://localhost:3000/purchase/premiummembership',{headers:{'Authorization':token}});
     //console.log(response);
     //we dont pass the amount from frontend because its easily editable
@@ -127,6 +127,7 @@ async function rzpTransaction(e){
             setTimeout(()=>{
                 notification.innerText='';
             },3000);
+            localStorage.setItem('premium',true);
             
         }
     }

@@ -7,7 +7,7 @@ async function resetPassword(e){
     const email = e.target.email.value;
     
     try{
-        const res = await axios.post('http://localhost:3000/password/forgotpassword/',{'email':email})
+        const res = await axios.post('https://localhost:3000/password/forgotpassword/',{'email':email})
         console.log(res);
         window.location.href = '/views/mailSent.html';
     }
