@@ -1,7 +1,6 @@
 const Razorpay = require('razorpay');
 const Order = require('../models/order');
 // const User = require('../models/user');
-require('dotenv').config()
 
 
 exports.purchasePremium = async (req, res ) =>{
@@ -35,7 +34,7 @@ exports.updateTransaction = async (req,res) =>{
             
             const order =await Order.findOne({where:{orderid : order_id}});
             const updatePaymentId = order.update({paymentid:payment_id , status : "SUCCESSFUL"});
-            const updatePremiumStatus = req.user.update({premium: true}) 
+            const updatePremiumStatus = req.user.update({premium: true});
             await Promise.all([updatePaymentId,updatePremiumStatus]);
             return res.status(202).json({success:true , message: "transaction successful"});
         }

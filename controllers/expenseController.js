@@ -37,7 +37,7 @@ exports.addExpense = async (req,res) =>{
             {totalExpense:currTotal},
             {where:{id:req.user.id},transaction:t}
         )
-                //will only result changes in the database if it is committed
+        //will only result changes in the database if it is committed
         await t.commit();
         
         res.status(201).json(expense);

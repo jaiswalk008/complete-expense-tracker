@@ -2,7 +2,6 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const sib = require('sib-api-v3-sdk');
-require('dotenv').config();
 const ResetPassword = require('../models/forgotPasswordRequests');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
@@ -111,11 +110,10 @@ exports.loginUser = async (req, res) => {
     const uuid = req.params.uuid;
    
     const result = await ResetPassword.findByPk(uuid);
-    // console.log(result)
-    if(result && result.isActive){
+
+    if(result && result.isActive)
       res.sendFile(path.join(__dirname,'..','views','resetPassword.html'));
-      // res.redirect('/password/updatepassword');
-    }
+     
     else{
       const htmlContent = `<html><head></head><body><h1>This Link has already been used.</h1><a href="http://127.0.0.1:5500/views/passwordRecovery.html">Click here to reset password</body></html>`;
       // Send HTML content in a separate response

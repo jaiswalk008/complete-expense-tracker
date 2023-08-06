@@ -1,7 +1,4 @@
 const User = require('../models/user');
-
-require('dotenv').config();
-
 const UserServices = require('../services/userServices')
 const S3Service = require('../services/s3Service');
 const DownloadLogs = require('../models/downloadLogs');
@@ -21,13 +18,21 @@ exports.showLeaderBoard = async (req,res) =>{
 exports.getReport = async(req,res) =>{
   try {
     const expenses = await UserServices.getExpenses(req);
- 
-    // /const expenseData = expenses.dataValues.map
-    //filename should depend on userId
+    const result = expenses.map(data => {
+      const value ={
+        Date:data.updatedAt.toString().substring(0,15),
+        Amount:data.amount,
+        Description:data.description,
+        category:data.category
+      };
+      return value;
+    })
+     
+    // filename depends on userId
     const userId  = req.user.id;
     const date = new Date();
     const fileName = `Expense${userId}/${date}.txt`;
-    const fileUrl =await S3Service.uploadToS3(JSON.stringify(expenses), fileName);
+    const fileUrl =await S3Service.uploadToS3(JSON.stringify(result ), fileName);
     await DownloadLogs.create({fileUrl:fileUrl , userId :req.user.id, date:JSON.stringify(date)});
     res.status(200).json(fileUrl);
   } catch (err) {
