@@ -80,7 +80,7 @@ exports.loginUser = async (req, res) => {
             email: req.body.email
         }], 
         subject : 'Password Reset',
-        htmlContent: `<html><head></head><body><a  href="http://localhost:3000/password/resetpassword/${uuid}">Click to reset your password</a>`
+        htmlContent: `<html><head></head><body><a  href="http://13.127.167.25:3000/password/resetpassword/${uuid}">Click to reset your password</a>`
     };
     
     try{
@@ -115,8 +115,8 @@ exports.loginUser = async (req, res) => {
       res.sendFile(path.join(__dirname,'..','public','user','resetPassword.html'));
      
     else{
-      const htmlContent = `<html><head></head><body><h1>This Link has already been used.</h1><a href="http://127.0.0.1:5500/views/passwordRecovery.html">Click here to reset password</body></html>`;
-      // Send HTML content in a separate response
+      const htmlContent = `<html><head></head><body><h1>This Link has already been used.</h1><a href="http://13.127.167.25:3000/public/user/passwordRecovery.html">Click here to reset password</body></html>`;
+      
       res.send(htmlContent);    
     }
   }

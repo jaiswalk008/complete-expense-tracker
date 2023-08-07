@@ -5,18 +5,15 @@ const bodyParser = require('body-parser');
 const server = express();
 const sequelize = require('./utils/database');
 const helmet = require('helmet');
-const fs = require('fs');
 const path = require('path');
-const https = require('https');
+ 
+
+//importing routes
 const userRoutes = require('./routes/userRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
 const purchaseRoutes = require('./routes/purchase');
 const premiumRoutes = require('./routes/premiumRoutes');
-const morgan = require('morgan');
-const compression = require('compression');
 server.use(cors());
- 
-
 
 server.use(bodyParser.urlencoded({extended:false}));
 server.use(bodyParser.json({extended:false}));
@@ -26,7 +23,6 @@ const Expense = require('./models/expense');
 const Order = require('./models/order');
 const ResetPassword = require('./models/forgotPasswordRequests')
 const DownloadLogs = require('./models/downloadLogs');
-const { Stream } = require('stream');
 //user login and signup route
 server.use(userRoutes);
 server.use(express.static(path.join(__dirname, "public")));
@@ -39,7 +35,7 @@ server.use('/premium',premiumRoutes);
 //setting default route
 server.use((req,res)=>{
     
-    res.sendFile(path.join(__dirname,`${req.url}`));
+    res.sendFile(path.join(__dirname,`public${req.url}`));
 })
 
 
