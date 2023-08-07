@@ -9,14 +9,14 @@ async function userLogin(e) {
     password: e.target.password.value,
   };
   try {
-    const res = await axios.post('http://localhost:3000/login/', userDetails);
+    const res = await axios.post('http://13.127.167.25:3000/login/', userDetails);
     if (res) {
       error.style.display='none';
       // console.log(res.data);
       localStorage.setItem('user-name',res.data.username);
       localStorage.setItem('token',res.data.token);
       //changing url to redirect 
-      window.location.href = '/views/addExpense.html';
+      window.location.href = '/public/expense/addExpense.html';
     }
   } catch (err) { 
     if(err.response.status===404){

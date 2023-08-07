@@ -5,14 +5,14 @@ const sequelize = require('../utils/database');
 exports.getExpense = async (req,res) =>{
     const page = +req.query.page || 1;
     const rows = +req.query.rows; 
-   
+    
     try{
         const expenses = await req.user.getExpenses({
             offset: (page - 1) * rows,
             limit: rows,
           });
         const count = await req.user.countExpenses();
-
+        console.log(expenses);
         res.status(200).json({"expense":expenses , "premium":req.user.premium,
         pageData: {
             currentPage: page,
@@ -39,7 +39,7 @@ exports.addExpense = async (req,res) =>{
         )
         //will only result changes in the database if it is committed
         await t.commit();
-        
+        console.log(expense);
         res.status(201).json(expense);
     }
     catch(err){

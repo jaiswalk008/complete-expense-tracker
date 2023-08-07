@@ -9,7 +9,7 @@ async function addUser(e){
         password : e.target.password.value
     }
     try{
-        const res =await axios.post('http://localhost:3000/signup/',userDetails);
+        const res =await axios.post('http://13.127.167.25:3000/signup/',userDetails);
         if(res.data.userFound){
             //if user exist
             document.getElementById('error').style.display='block';
@@ -19,7 +19,7 @@ async function addUser(e){
             document.getElementById('error').style.display='none';
             form.reset();
             //after signup redirecting for login
-            window.location.replace('/views/login.html');
+            window.location.replace('/public/user/login.html');
         }
     }
     catch(err){console.log(err);}

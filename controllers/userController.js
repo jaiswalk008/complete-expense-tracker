@@ -112,7 +112,7 @@ exports.loginUser = async (req, res) => {
     const result = await ResetPassword.findByPk(uuid);
 
     if(result && result.isActive)
-      res.sendFile(path.join(__dirname,'..','views','resetPassword.html'));
+      res.sendFile(path.join(__dirname,'..','public','user','resetPassword.html'));
      
     else{
       const htmlContent = `<html><head></head><body><h1>This Link has already been used.</h1><a href="http://127.0.0.1:5500/views/passwordRecovery.html">Click here to reset password</body></html>`;

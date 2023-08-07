@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="../public/css/signup.css">
+    <link rel="stylesheet" href="signup.css">
     <style>
         .message-alert{
             display: none;
@@ -13,7 +13,7 @@
     </style>
 </head>
 <body>
-    <header>
+    <header class="bg-gradient">
         <h2 class="title">Expense Tracker</h2>
     </header>
     <div class="container  p-3 mt-5 d-flex flex-column align-content-center ">
@@ -27,11 +27,11 @@
             <button class="btn btn-dark w-100  mt-3" type="submit">Login</button> 
         </form>
         <div class="text-center">
-            <button id="reset" onclick="window.location.href = '/views/passwordRecovery.html'" class="btn btn-primary mt-2 w-50">Forgot Password ?</button>
+            <button id="reset" onclick="window.location.href = '/public/user/passwordRecovery.html'" class="btn btn-primary mt-2 w-50">Forgot Password ?</button>
         </div>
         <a class="mt-3" href="signup.html">Click here to signup</a>
     </div>
-    <script src="../public/js/login.js"></script>
+    <script src="login.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     
 </body>

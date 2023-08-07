@@ -35,14 +35,15 @@ server.use(express.static(path.join(__dirname, "public")));
 server.use('/expense',expenseRoutes);
 server.use('/purchase',purchaseRoutes);
 server.use('/premium',premiumRoutes);
+
 //setting default route
 server.use((req,res)=>{
-    console.log(req.url);
-    res.sendFile(path.join(__dirname,`views/${req.url}`));
+    
+    res.sendFile(path.join(__dirname,`${req.url}`));
 })
+
+
 //creating association between user and expense
-
-
 User.hasMany(Expense);
 Expense.belongsTo(User);
 
