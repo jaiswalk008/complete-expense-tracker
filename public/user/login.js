@@ -16,7 +16,7 @@ async function userLogin(e) {
       localStorage.setItem('user-name',res.data.username);
       localStorage.setItem('token',res.data.token);
       //changing url to redirect 
-      window.location.href = '/public/expense/addExpense.html';
+      window.location.href = '/expense/addExpense.html';
     }
   } catch (err) { 
     if(err.response.status===404){

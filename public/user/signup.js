@@ -19,7 +19,7 @@ async function addUser(e){
             document.getElementById('error').style.display='none';
             form.reset();
             //after signup redirecting for login
-            window.location.replace('/public/user/login.html');
+            window.location.replace('/user/login.html');
         }
     }
     catch(err){console.log(err);}

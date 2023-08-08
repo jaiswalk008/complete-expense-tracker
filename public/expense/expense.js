@@ -153,7 +153,7 @@ async function deleteExpense(id){
 }
 
 function logout(){
-    window.location.replace('/public/user/login.html');
+    window.location.replace('/user/login.html');
 }
 
 function getLiForPagination(page){
