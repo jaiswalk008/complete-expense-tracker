@@ -13,7 +13,7 @@ const token = localStorage.getItem('token');
 async function showLeaderBoard(){
     
     try{
-        const res = await axios.get('http://13.127.167.25:3000/premium/leaderboard',{
+        const res = await axios.get('http://13.200.61.246/premium/leaderboard',{
             headers:{'Authorization':localStorage.getItem('token')}
         });
         // console.log(res.data);
@@ -35,7 +35,7 @@ window.addEventListener('DOMContentLoaded',() =>{
     leaderboardBtn.click();
     const userName = document.querySelector('.user-name');
     
-    userName.innerHTML = `${localStorage.getItem('user-name')} <img class="premium-img" title="premium member" src="../../assets/images/membership-logo.png" alt="membership">  <i title="logout" onClick="logout()" class="bi bi-power"></i>`;
+    userName.innerHTML = `${localStorage.getItem('user-name')} <img class="premium-img" title="premium member" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZ8KMfc_6fo4jx_a85lHRt3AdsJsvq786JpIyeSh4PZkwkv0Jq" alt="membership">  <i title="logout" onClick="logout()" class="bi bi-power"></i>`;
     if(localStorage.getItem('premium')=='true') {
        
         document.querySelector('.premium-img').style.display = 'block';
@@ -44,7 +44,7 @@ window.addEventListener('DOMContentLoaded',() =>{
 async function downloadReport(){
     try {
         if(localStorage.getItem('premium')=='true'){
-            const res = await axios.get('http://13.127.167.25:3000/premium/download', { headers: {"Authorization" : token }})
+            const res = await axios.get('http://13.200.61.246/premium/download', { headers: {"Authorization" : token }})
         const a = document.createElement("a");
         
         a.href = res.data;
@@ -75,7 +75,7 @@ function display(data){
 async function showDownloadLogs(){
     
     try {
-        const downloads = await  axios.get('http://13.127.167.25:3000/premium/downloadlogs', { headers: {"Authorization" :token} })
+        const downloads = await  axios.get('http://13.200.61.246/premium/downloadlogs', { headers: {"Authorization" :token} })
         if(localStorage.getItem('premium')=='true') displayDownloads(downloads.data.report);
         else alert('Buy Premium Membership');
     } catch (err) {
@@ -105,7 +105,7 @@ async function showDownloadLogs(){
 async function rzpTransaction(e){
     
     
-    const response = await axios.get('http://13.127.167.25:3000/purchase/premiummembership',{headers:{'Authorization':token}});
+    const response = await axios.get('http://13.200.61.246/purchase/premiummembership',{headers:{'Authorization':token}});
     //console.log(response);
     //we dont pass the amount from frontend because its easily editable
     const options ={
@@ -113,7 +113,7 @@ async function rzpTransaction(e){
         "order_id":response.data.order.id,
         //this handler function will handle the success payment
         "handler":async function (response){
-            await axios.post('http://13.127.167.25:3000/purchase/updatetransactionstatus',{
+            await axios.post('http://13.200.61.246/purchase/updatetransactionstatus',{
                 order_id:options.order_id,
                 payment_id:response.razorpay_payment_id,
                 success:true
@@ -136,7 +136,7 @@ async function rzpTransaction(e){
     e.preventDefault();
     //if payment fails below code will be executed
     rzp.on('payment.failed' ,async  function(response){
-        const res = await axios.post('http://13.127.167.25:3000/purchase/updatetransactionstatus',{
+        const res = await axios.post('http://13.200.61.246/purchase/updatetransactionstatus',{
                 order_id:options.order_id,
                 payment_id:response.razorpay_payment_id,
                 success:false

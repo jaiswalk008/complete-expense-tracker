@@ -9,7 +9,7 @@ async function addUser(e){
         password : e.target.password.value
     }
     try{
-        const res =await axios.post('http://13.127.167.25:3000/signup/',userDetails);
+        const res =await axios.post('http://13.200.61.246/signup/',userDetails);
         if(res.data.userFound){
             //if user exist
             document.getElementById('error').style.display='block';
