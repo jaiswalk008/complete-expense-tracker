@@ -115,7 +115,7 @@ exports.loginUser = async (req, res) => {
       res.sendFile(path.join(__dirname,'..','public','user','resetPassword.html'));
      
     else{
-      const htmlContent = `<html><head></head><body><h1>This Link has already been used.</h1><a href="http:// 13.200.61.246/user/passwordRecovery.html">Click here to reset password</body></html>`;
+      const htmlContent = `<html><head></head><body><h1>This Link has already been used.</h1><a href="http://13.200.61.246/user/passwordRecovery.html">Click here to reset password</body></html>`;
       
       res.send(htmlContent);    
     }
