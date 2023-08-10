@@ -22,10 +22,10 @@
                 <div  >
                     <ul class="navbar-nav ml-auto ">
                         <li class="nav-item text-center">
-                            <button id="home" onclick="window.location.href='http://13.200.61.246/expense/addExpense.html'" class="btn btn-dark">Home</button>
+                            <button id="home" onclick="window.location.href='http://localhost:3000/expense/addExpense.html'" class="btn btn-dark">Home</button>
                         </li>
                         <li class="nav-item text-center">
-                            <button id="leaderboard-btn" onclick="window.location.href='http://13.200.61.246/expense/leaderboard.html'" class="btn btn-dark">Leaderboard</button>
+                            <button id="leaderboard-btn" onclick="window.location.href='http://localhost:3000/expense/leaderboard.html'" class="btn btn-dark">Leaderboard</button>
                         </li>
                         <li class="nav-item text-center">
                             <button id="download" class="btn btn-dark">Report</button>
@@ -66,7 +66,7 @@
                             <option value="tarvel">Travel</option>
                             <option value="other">Other</option>
                         </select>
-                        <button type="submit" class="btn  btn-dark">Add Expense</button>
+                        <button type="submit" class="btn add-expense btn-dark">Add Expense</button>
                         
                     </div>
                 </form>   
@@ -81,9 +81,9 @@
                     </select>
 
                     </span>
-                    
+                    <div class="expense-list-header mt-3">Expense List</div>
                     <ul class="expense-list m-3">
-                        <li class="expense-list-header"><span class="d-flex justify-content-center" >Expense List</span></li> <!-- Header added here -->
+                        
 
                     </ul> 
                     <div class="text-center align-items-center ">

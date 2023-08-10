@@ -8,6 +8,7 @@ rzpBtn.addEventListener('click',rzpTransaction)
 let flag2 = false;
 const rowsPerPage = document.getElementById('rows');
 const downloadBtn = document.getElementById('download');
+const addExpenseBtn = document.querySelector('.add-expense');
 downloadBtn.addEventListener('click',downloadReport);
 
 rowsPerPage.addEventListener("change", function() {
@@ -24,10 +25,11 @@ function addExpenseInfo(info){
     expense.innerHTML=`<span>${info.amount} - ${info.description} - ${info.category}</span>
     <br><button onClick="editExpense(${info.id})" class="edit  btn-danger"><i class="bi bi-pencil-square"></i></button> 
     <button onClick="deleteExpense(${info.id})" class="delete btn-dark"><i class="bi bi-trash"><i/></button>`;
-    list.appendChild(expense);
+    list.prepend(expense);
     list.style.display ='block';
     document.querySelector('.span-expense').style.display='block';
-    
+    document.querySelector('.expense-list-header').style.display='block';
+    addExpenseBtn.innerText = 'Add Expense';
 }
 
 //function to add expense
@@ -40,7 +42,7 @@ async function addExpense(e){
     };
     
     try{
-        const expenseDetails = await axios.post('http://13.200.61.246/expense/addExpense',expense,{
+        const expenseDetails = await axios.post('http://localhost:3000/expense/addExpense',expense,{
             headers:{'Authorization':token}
         });
         addExpenseInfo(expenseDetails.data);
@@ -54,7 +56,7 @@ async function addExpense(e){
 async function rzpTransaction(e){
     
 
-    const response = await axios.get('http://13.200.61.246/purchase/premiummembership',{headers:{'Authorization':token}});
+    const response = await axios.get('http://localhost:3000/purchase/premiummembership',{headers:{'Authorization':token}});
     //console.log(response);
     //we dont pass the amount from frontend because its easily editable
     const options ={
@@ -62,7 +64,7 @@ async function rzpTransaction(e){
         "order_id":response.data.order.id,
         //this handler function will handle the success payment
         "handler":async function (response){
-            await axios.post('http://13.200.61.246/purchase/updatetransactionstatus',{
+            await axios.post('http://localhost:3000/purchase/updatetransactionstatus',{
                 order_id:options.order_id,
                 payment_id:response.razorpay_payment_id,
                 success:true
@@ -83,7 +85,7 @@ async function rzpTransaction(e){
     e.preventDefault();
     //if payment fails below code will be executed
     rzp.on('payment.failed' ,async  function(response){
-        const res = await axios.post('http://13.200.61.246/purchase/updatetransactionstatus',{
+        const res = await axios.post('http://localhost:3000/purchase/updatetransactionstatus',{
                 order_id:options.order_id,
                 payment_id:response.razorpay_payment_id,
                 success:false
@@ -101,13 +103,10 @@ window.addEventListener('DOMContentLoaded',async () =>{
     
     userName.innerHTML = `${localStorage.getItem('user-name')} <img class="premium-img" title="premium member" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZ8KMfc_6fo4jx_a85lHRt3AdsJsvq786JpIyeSh4PZkwkv0Jq" alt="membership">  <i title="logout" onClick="logout()" class="bi bi-power"></i>
     `;
-    const rows = localStorage.getItem('rows');
-    if(rows){
-        rowsPerPage.value=rows;
-    }
-    else localStorage.setItem('rows',rowsPerPage.value);
+    const rows = localStorage.getItem('rows')? localStorage.getItem('rows'):3;
+    rowsPerPage.value=rows;
     try{
-        const expenseDetails = await axios.get(`http://13.200.61.246/expense/getExpense?page=1&rows=${rowsPerPage.value} `,{
+        const expenseDetails = await axios.get(`http://localhost:3000/expense/getExpense?page=1&rows=${rowsPerPage.value} `,{
             headers:{'Authorization':token}
         });
         localStorage.setItem('premium',expenseDetails.data.premium);
@@ -127,13 +126,14 @@ window.addEventListener('DOMContentLoaded',async () =>{
 //editing the expense
 async function editExpense(id){
     try{
-        const expense= await axios.get(`http://13.200.61.246/expense/editExpense/${id}`,{
+        const expense= await axios.get(`http://localhost:3000/expense/editExpense/${id}`,{
             headers:{'Authorization':token}
         });
       
         document.getElementById('expense').value = expense.data.amount;
         document.getElementById('description').value = expense.data.description;
         document.getElementById('category').value = expense.data.category;
+        addExpenseBtn.innerText = 'Update Expense';
         //calling delete function to remove that expense
         deleteExpense(id);
     }catch(err){console.log(err)};  
@@ -142,7 +142,7 @@ async function editExpense(id){
 async function deleteExpense(id){
     
     try{
-        await axios.delete(`http://13.200.61.246/expense/deleteExpense/${id}`,{
+        await axios.delete(`http://localhost:3000/expense/deleteExpense/${id}`,{
             headers:{'Authorization':token}
         });
         //the code inside the parathesis will return the li element to be deleted
@@ -182,7 +182,7 @@ function showPagination(pageData){
 }
 async function getCurrentPageExpense(page) {
     try {
-        const expenseDetails = await axios.get(`http://13.200.61.246/expense/getExpense?page=${page}&rows=${rowsPerPage.value}`,{
+        const expenseDetails = await axios.get(`http://localhost:3000/expense/getExpense?page=${page}&rows=${rowsPerPage.value}`,{
             headers:{'Authorization':token}
         });
         console.log(expenseDetails.data);
@@ -196,7 +196,7 @@ async function getCurrentPageExpense(page) {
 async function showDownloadLogs(){
     
     try {
-        const downloads = await  axios.get('http://13.200.61.246/premium/downloadlogs', { headers: {"Authorization" : localStorage.getItem('token')} })
+        const downloads = await  axios.get('http://localhost:3000/premium/downloadlogs', { headers: {"Authorization" : localStorage.getItem('token')} })
         if(localStorage.getItem('premium')=='true') displayDownloads(downloads.data.report);
         else alert('Buy Premium Membership');
     } catch (err) {
@@ -234,7 +234,7 @@ async function showDownloadLogs(){
 async function downloadReport(){
     try {
         if(localStorage.getItem('premium')=='true'){
-            const res = await axios.get('http://13.200.61.246/premium/download', { headers: {"Authorization" : localStorage.getItem('token')} })
+            const res = await axios.get('http://localhost:3000/premium/download', { headers: {"Authorization" : localStorage.getItem('token')} })
         const a = document.createElement("a");
         
         a.href = res.data;

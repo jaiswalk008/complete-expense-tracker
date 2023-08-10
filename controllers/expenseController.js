@@ -12,7 +12,7 @@ exports.getExpense = async (req,res) =>{
             limit: rows,
           });
         const count = await req.user.countExpenses();
-        console.log(expenses);
+        // console.log(expenses);
         res.status(200).json({"expense":expenses , "premium":req.user.premium,
         pageData: {
             currentPage: page,
@@ -39,7 +39,7 @@ exports.addExpense = async (req,res) =>{
         )
         //will only result changes in the database if it is committed
         await t.commit();
-        console.log(expense);
+        // console.log(expense);
         res.status(201).json(expense);
     }
     catch(err){

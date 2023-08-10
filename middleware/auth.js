@@ -7,7 +7,7 @@ const authenticate = async (req,res,next) =>{
         const token = req.header('Authorization');
          
         const result = jwt.verify(token, process.env.JWT_SECRET_KEY);
-        console.log('userId :' + result.userId);
+        // console.log('userId :' + result.userId);
         const user = await User.findByPk(result.userId);
         req.user = user;
         next();

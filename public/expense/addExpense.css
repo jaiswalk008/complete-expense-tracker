@@ -45,6 +45,7 @@ li{
 }
 .expense-list{
     display: none;
+    text-transform: capitalize;
     border: 1.5px solid black;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
@@ -74,10 +75,13 @@ li{
     display: none;
 }
 .expense-list-header {
-    
+    display: none;
+    width: 150px;
+    text-align: center;
     font-weight: bold;
+    font-size: 1.075rem;
     background-color: #2e2e2e;
-    padding-left: 0px;
+    padding: 2px;
     color: #ffffff;
     list-style: none; /* Set the disc style for the header */
     
