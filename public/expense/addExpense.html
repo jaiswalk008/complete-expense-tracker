@@ -51,9 +51,9 @@
             <div class="container d-flex align-items-center flex-column p-4">
                 <form  id="expense-form">
                     <div class="d-flex justify-content-center flex-column mb-3">
-                        <label for="expense"  class="form-label">Enter Expense Amount: </label>
+                        <label for="expense"  class="form-label">Expense Amount: </label>
                         <input type="number" id="expense" class="form-control" required> 
-                        <label for="description" class="form-label p-1">Choose a description: </label>
+                        <label for="description" class="form-label p-1">Description: </label>
                         <input type="text" id="description"  class="form-control" required>
                         <label for="category" class="form-label p-1">Choose a category</label>
                         <select name="category" class="w-100 mb-3" id="category" required>
@@ -63,7 +63,7 @@
                             <option value="electricity">Electricity</option>
                             <option value="clothing">Clothing</option>
                             <option value="bills">Bills</option>
-                            <option value="tarvel">Travel</option>
+                            <option value="travel">Travel</option>
                             <option value="other">Other</option>
                         </select>
                         <button type="submit" class="btn add-expense btn-dark">Add Expense</button>
@@ -72,7 +72,8 @@
                 </form>   
                  
                 <div class="d-flex expense-container justify-content-between align-items-center flex-column">
-                    <span class="span-expense">Rows Per page: <select class="mt-2" name="rows" id="rows">
+                    <span class="span-expense">Rows Per page: 
+                        <select class="mt-2" name="rows" id="rows">
                         <option ></option>
                         <option default value="3">3</option>
                         <option value="5">5</option>
@@ -87,7 +88,7 @@
 
                     </ul> 
                     <div class="text-center align-items-center ">
-                        <nav aria-label="Page navigation example">
+                        <nav class="pagination-nav" aria-label="Page navigation example">
                             <ul class="pagination">
                             </ul>
                         </nav>

@@ -9,7 +9,7 @@ exports.showLeaderBoard = async (req,res) =>{
           attributes:['name','totalExpense'],
           order:[['totalExpense','DESC']]
         })
-        res.json({'results':leaderboardResults , "premium":req.user.premium});
+        res.json({'results':leaderboardResults});
     } 
     catch(err){console.log(err);}
 }

@@ -6,6 +6,9 @@
     border: 2px solid rgb(57, 56, 56);
    
 }
+.pagination-nav{
+    display: none;
+}
 
 .leaderboard-list{
     list-style: none;
@@ -43,6 +46,7 @@ li{
 .btn:hover{
     background-color: rgb(54, 54, 54) !important;
 }
+
 .expense-list{
     display: none;
     text-transform: capitalize;
@@ -95,6 +99,9 @@ li{
 }
 li > span{
     margin-right: 3px;
+}
+.span-expense{
+    display: none;
 }
 
 #expense-form{
