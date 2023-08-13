@@ -10,15 +10,16 @@ exports.purchasePremium = async (req, res ) =>{
             key_secret: process.env.key_secret
         })
         const amount = 2500;
-        rzp.orders.create({amount,currency: "INR"}, (err,order) =>{
+        rzp.orders.create({amount,currency: "INR"}, async (err,order) =>{
             if(err){
                 console.log(err)
             }
             //user and order have one to many relationship
             //this is when the user has just clicked on but premium button
-            req.user.createOrder({orderid : order.id , status :'PENDING'}).then(() =>{
-                return res.status(201).json({order,key_id : rzp.key_id})
-            }).catch(err => console.log(err));
+            try{
+                await  req.user.createOrder({orderid : order.id , status :'PENDING'});
+                res.status(201).json({order,key_id : rzp.key_id})
+            }catch(err){console.log(err)};
         })
     } catch (err) {
         console.log(err);

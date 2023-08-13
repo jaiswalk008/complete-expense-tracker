@@ -6,7 +6,7 @@ leaderboardBtn.addEventListener('click',showLeaderBoard);
 const download = document.getElementById('download');
 download.addEventListener('click',downloadReport);
 let flag = true;
-let flag2 = false;
+let downloadFlag = false;
 const rzpBtn2 = document.getElementById('rzp-button');
 rzpBtn2.addEventListener('click',rzpTransaction)
 const token = localStorage.getItem('token');
@@ -14,10 +14,10 @@ async function showLeaderBoard(){
     
     try{
         const res = await axios.get('http://13.200.61.246/premium/leaderboard',{
-            headers:{'Authorization':localStorage.getItem('token')}
+            headers:{'Authorization':token}
         });
         // console.log(res.data);
-        if(res.data.premium ){
+        if(localStorage.getItem('premium')=='true'){
             if(flag) {
                 // console.log(res.data.results);
                 display(res.data.results);
@@ -26,7 +26,6 @@ async function showLeaderBoard(){
         else{
             document.querySelector('.message-alert').style.display='block';
             document.querySelector('.btn-container').style.display='block';
-            
         }
         
     }catch(err){console.log(err);}
@@ -83,10 +82,10 @@ async function showDownloadLogs(){
     }
  }
  function displayDownloads(data){
-    flag2= !flag2;
+    downloadFlag= !downloadFlag;
     const downloadList = document.querySelector('.download-logs');
     
-    if(flag2){
+    if(downloadFlag){
         downloadList.innerHTML='';
          
         data.forEach((element,index) => {
@@ -103,7 +102,6 @@ async function showDownloadLogs(){
 }
 //razorpay action
 async function rzpTransaction(e){
-    
     
     const response = await axios.get('http://13.200.61.246/purchase/premiummembership',{headers:{'Authorization':token}});
     //console.log(response);

@@ -26,12 +26,15 @@ function addExpenseInfo(info){
     <br><button onClick="editExpense(${info.id})" class="edit  btn-danger"><i class="bi bi-pencil-square"></i></button> 
     <button onClick="deleteExpense(${info.id})" class="delete btn-dark"><i class="bi bi-trash"><i/></button>`;
     list.prepend(expense);
+    displayFeatures();
+}
+function displayFeatures(){
     list.style.display ='block';
     document.querySelector('.span-expense').style.display='block';
     document.querySelector('.expense-list-header').style.display='block';
+    document.querySelector('.pagination-nav').style.display='block';
     addExpenseBtn.innerText = 'Add Expense';
 }
-
 //function to add expense
 async function addExpense(e){
     e.preventDefault();

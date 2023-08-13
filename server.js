@@ -4,7 +4,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const server = express();
 const sequelize = require('./utils/database');
-const helmet = require('helmet');
 const path = require('path');
  
 
