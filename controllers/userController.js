@@ -5,14 +5,17 @@ const sib = require('sib-api-v3-sdk');
 const ResetPassword = require('../models/forgotPasswordRequests');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
+const user = require('../models/user');
 
 exports.addUser = async (req,res) =>{
     //getting the user details
     const userDetails = {...req.body};
+    console.log(userDetails);
     try{
-        const user =await  User.findOne({ where: {email : userDetails.email}});
+      const existingmail = await User.findOne({'email': userDetails.email});
+      // console.log(existingmail);
         //if user exist
-        if(user){
+        if(existingmail){
             res.json({'userFound':true});
         }
         else {
@@ -20,7 +23,9 @@ exports.addUser = async (req,res) =>{
             const saltRounds = 10;
             bcrypt.hash(userDetails.password,saltRounds, async (err,hash)=>{
               //we can use const user because const is blocked scope
-              const user = await User.create({...userDetails,password:hash});
+              const user = new User({...userDetails, password:hash});
+              await user.save();
+              console.log(user);
               res.json(user);
             })
             
@@ -35,7 +40,7 @@ function generateAccessToken(id,name){
 exports.loginUser = async (req, res) => {
     const userDetails = req.body;
     try {
-      const user = await User.findOne({ where: { email: userDetails.email } });
+      const user = await User.findOne({ email: userDetails.email });
       if (user) {
         //comparing password with hash value
         //first is normal password and the second is hash value
@@ -60,7 +65,7 @@ exports.loginUser = async (req, res) => {
       res.status(500).json({ message: 'Internal server error!' });
     }
   };
-  //controller for sending email when the user enters email and wants to reset password
+  // controller for sending email when the user enters email and wants to reset password
   exports.forgotPassword = async (req,res) =>{
     //getting a new uuid
     const uuid = uuidv4();
@@ -80,19 +85,20 @@ exports.loginUser = async (req, res) => {
             email: req.body.email
         }], 
         subject : 'Password Reset',
-        htmlContent: `<html><head></head><body><a  href="http://13.200.61.246/password/resetpassword/${uuid}">Click to reset your password</a>`
+        htmlContent: `<html><head></head><body><a  href="http://localhost:3000/password/resetpassword/${uuid}">Click to reset your password</a>`
     };
     
     try{
-      let user = await User.findOne({where : { email : req.body.email }});
+      let user = await User.findOne( { email : req.body.email });
       //if the user exist then only send the email
       if(user){
         
-        user = {...user.dataValues};
+        user = {...user._doc};
+        console.log(user);
         try {
           // res.sendFile(path.join(__dirname,'..','views','mailSent.html'));
-          const resetPassword = await ResetPassword.create({ id: uuid, userId: user.id });
-          
+          const resetPassword = new  ResetPassword({ id: uuid, userId: user._id });
+          await resetPassword.save();
           const result = await apiInstance.sendTransacEmail(sendSmtpEmail);
           res.json({message:'sent mail successfully'});
           
@@ -109,13 +115,16 @@ exports.loginUser = async (req, res) => {
   exports.resetPassword =async (req,res) =>{
     const uuid = req.params.uuid;
    
-    const result = await ResetPassword.findByPk(uuid);
+    const result = await ResetPassword.findOne({id:uuid});
 
-    if(result && result.isActive)
+    if(result && result.isActive){
       res.sendFile(path.join(__dirname,'..','public','user','resetPassword.html'));
-     
+      
+    }
+      
+      
     else{
-      const htmlContent = `<html><head></head><body><h1>This Link has already been used.</h1><a href="http://13.200.61.246/user/passwordRecovery.html">Click here to reset password</body></html>`;
+      const htmlContent = `<html><head></head><body><h1>This Link has already been used.</h1><a href="http://localhost:3000/user/passwordRecovery.html">Click here to reset password</body></html>`;
       
       res.send(htmlContent);    
     }
@@ -125,17 +134,18 @@ exports.loginUser = async (req, res) => {
     const password = req.body.password;
    
     const saltRounds = 10;
-    const result  = await ResetPassword.findByPk(req.body.uuid);
- 
-    const user = await User.findByPk(result.dataValues.userId);
+    const result  = await ResetPassword.find({id:req.body.uuid});
+    console.log(result);
+    // const user = await User.find({_id:result.userId});
     
     bcrypt.hash(password,saltRounds, async (err,hash)=>{
       if(err){
         console.log(err);
       }
       try {
-        await User.update({password: hash} ,{where:{id:result.dataValues.userId}});
-        await ResetPassword.update({ isActive: false },{where:{userId:result.dataValues.userId}});
+        await User.updateOne({_id:result.userid},{password:hash})
+        await ResetPassword.updateOne({id:req.body.uuid},{isActive:false});
+        
         console.log('password updated');
       } catch (err) {
         console.log(err);

@@ -3,9 +3,9 @@ const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
 const server = express();
-const sequelize = require('./utils/database');
+// const sequelize = require('./utils/database');
 const path = require('path');
- 
+const mongoose = require('mongoose');
 
 //importing routes
 const userRoutes = require('./routes/userRoutes');
@@ -18,10 +18,10 @@ server.use(bodyParser.urlencoded({extended:false}));
 server.use(bodyParser.json({extended:false}));
 
 const User = require('./models/user');
-const Expense = require('./models/expense');
-const Order = require('./models/order');
-const ResetPassword = require('./models/forgotPasswordRequests')
-const DownloadLogs = require('./models/downloadLogs');
+// const Expense = require('./models/expense');
+// const Order = require('./models/order');
+// const ResetPassword = require('./models/forgotPasswordRequests')
+// const DownloadLogs = require('./models/downloadLogs');
 //user login and signup route
 server.use(userRoutes);
 server.use(express.static(path.join(__dirname, "public")));
@@ -38,25 +38,26 @@ server.use((req,res)=>{
 })
 
 
-//creating association between user and expense
-User.hasMany(Expense);
-Expense.belongsTo(User);
+// //creating association between user and expense
+// User.hasMany(Expense);
+// Expense.belongsTo(User);
 
-//creating association between user and order
-User.hasMany(Order);
-Order.belongsTo(User);
+// //creating association between user and order
+// User.hasMany(Order);
+// Order.belongsTo(User);
 
-//creating association between user and reset password
-User.hasMany(ResetPassword);
-ResetPassword.belongsTo(User);
+// //creating association between user and reset password
+// User.hasMany(ResetPassword);
+// ResetPassword.belongsTo(User);
 
 //creating association between user and download logs
-User.hasMany(DownloadLogs);
-DownloadLogs.belongsTo(User);
+// User.hasMany(DownloadLogs);
+// DownloadLogs.belongsTo(User);
 
 async function startServer (){
     try{
-        await sequelize.sync();
+       
+        await mongoose.connect(process.env.MONGODB_SRV);
         server.listen(process.env.PORT || 3000);
     }catch(err){console.log(err);}
 }

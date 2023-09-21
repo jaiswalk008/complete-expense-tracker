@@ -1,33 +1,68 @@
-const Sequelize = require('sequelize');
-const sequelize = require('../utils/database');
+const mongoose = require('mongoose');
+const Schema  = mongoose.Schema;
 
-const User = sequelize.define('user',{
-    id:{
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        allowNull: false,
-        autoIncrement: true
+const user = new Schema({
+    name: {
+        type: String,
+        required: true
     },
-    name:{
-        type: Sequelize.STRING,
-        allowNull:false
+    email: {
+        type: String,
+        required: true,
+        unique: true
     },
-    email:{
-        type:Sequelize.STRING,
-        allowNull:false
+    password: {
+        type: String,
+        required: true
     },
-    password:{
-        type: Sequelize.STRING,
-        allowNull:false
+    totalExpense: {
+        type: Number,
+        default: 0
     },
     premium: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false 
+        type: Boolean,
+        default: false
     },
-    totalExpense:{
-        type:Sequelize.DECIMAL,
-        defaultValue:0
-    }
-
+    // orders: {
+    //     type: [Order.schema],
+    //     default: []   
+    // }
 })
-module.exports = User;
+
+
+module.exports = mongoose.model('User',user);
+
+
+// const Sequelize = require('sequelize');
+// const sequelize = require('../utils/database');
+
+// const User = sequelize.define('user',{
+//     id:{
+//         type: Sequelize.INTEGER,
+//         primaryKey: true,
+//         allowNull: false,
+//         autoIncrement: true
+//     },
+//     name:{
+//         type: Sequelize.STRING,
+//         allowNull:false
+//     },
+//     email:{
+//         type:Sequelize.STRING,
+//         allowNull:false
+//     },
+//     password:{
+//         type: Sequelize.STRING,
+//         allowNull:false
+//     },
+//     premium: {
+//         type: Sequelize.BOOLEAN,
+//         defaultValue: false 
+//     },
+//     totalExpense:{
+//         type:Sequelize.DECIMAL,
+//         defaultValue:0
+//     }
+
+// })
+// module.exports = User;

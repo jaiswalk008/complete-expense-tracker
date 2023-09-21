@@ -8,7 +8,7 @@ router.get('/getExpense',userAuthentication,expenseController.getExpense);
 router.post('/addExpense',userAuthentication,expenseController.addExpense);
 //route for editing the expense
 router.get('/editExpense/:id',userAuthentication,expenseController.editExpense);
-//route for deleting the expense
+// //route for deleting the expense
 router.delete('/deleteExpense/:id',userAuthentication,expenseController.deleteExpense);
 
 module.exports = router;

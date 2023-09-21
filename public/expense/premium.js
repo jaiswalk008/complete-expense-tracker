@@ -13,7 +13,7 @@ const token = localStorage.getItem('token');
 async function showLeaderBoard(){
     
     try{
-        const res = await axios.get('http://13.200.61.246/premium/leaderboard',{
+        const res = await axios.get('http://localhost:3000/premium/leaderboard',{
             headers:{'Authorization':token}
         });
         // console.log(res.data);
@@ -43,7 +43,7 @@ window.addEventListener('DOMContentLoaded',() =>{
 async function downloadReport(){
     try {
         if(localStorage.getItem('premium')=='true'){
-            const res = await axios.get('http://13.200.61.246/premium/download', { headers: {"Authorization" : token }})
+            const res = await axios.get('http://localhost:3000/premium/download', { headers: {"Authorization" : token }})
         const a = document.createElement("a");
         
         a.href = res.data;
@@ -74,7 +74,7 @@ function display(data){
 async function showDownloadLogs(){
     
     try {
-        const downloads = await  axios.get('http://13.200.61.246/premium/downloadlogs', { headers: {"Authorization" :token} })
+        const downloads = await  axios.get('http://localhost:3000/premium/downloadlogs', { headers: {"Authorization" :token} })
         if(localStorage.getItem('premium')=='true') displayDownloads(downloads.data.report);
         else alert('Buy Premium Membership');
     } catch (err) {
@@ -103,7 +103,7 @@ async function showDownloadLogs(){
 //razorpay action
 async function rzpTransaction(e){
     
-    const response = await axios.get('http://13.200.61.246/purchase/premiummembership',{headers:{'Authorization':token}});
+    const response = await axios.get('http://localhost:3000/purchase/premiummembership',{headers:{'Authorization':token}});
     //console.log(response);
     //we dont pass the amount from frontend because its easily editable
     const options ={
@@ -111,7 +111,7 @@ async function rzpTransaction(e){
         "order_id":response.data.order.id,
         //this handler function will handle the success payment
         "handler":async function (response){
-            await axios.post('http://13.200.61.246/purchase/updatetransactionstatus',{
+            await axios.post('http://localhost:3000/purchase/updatetransactionstatus',{
                 order_id:options.order_id,
                 payment_id:response.razorpay_payment_id,
                 success:true
@@ -134,7 +134,7 @@ async function rzpTransaction(e){
     e.preventDefault();
     //if payment fails below code will be executed
     rzp.on('payment.failed' ,async  function(response){
-        const res = await axios.post('http://13.200.61.246/purchase/updatetransactionstatus',{
+        const res = await axios.post('http://localhost:3000/purchase/updatetransactionstatus',{
                 order_id:options.order_id,
                 payment_id:response.razorpay_payment_id,
                 success:false

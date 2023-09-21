@@ -1,17 +1,20 @@
- 
+
 const User = require('../models/user');
-const sequelize = require('../utils/database');
+const mongoose = require('mongoose');
+const Expense = require('../models/expense');
 
 exports.getExpense = async (req,res) =>{
     const page = +req.query.page || 1;
     const rows = +req.query.rows; 
     
     try{
-        const expenses = await req.user.getExpenses({
-            offset: (page - 1) * rows,
-            limit: rows,
-          });
-        const count = await req.user.countExpenses();
+        
+        const expenses = await Expense.find({ userId:req.user })
+            .skip((page - 1) * rows)
+            .limit(rows);
+        // console.log(expenses);
+        count = await Expense.count({ userId:req.user });
+        
         // console.log(expenses);
         res.status(200).json({"expense":expenses , "premium":req.user.premium,
         pageData: {
@@ -26,58 +29,73 @@ exports.getExpense = async (req,res) =>{
     catch(err){console.log(err);}
 
 }
-exports.addExpense = async (req,res) =>{
-    
-    const t =await sequelize.transaction();
-    try{
-        let currTotal = parseInt(req.user.totalExpense);
-        const expense = await req.user.createExpense({...req.body},{transaction:t});
+exports.addExpense = async (req, res) => {
+    //starting a session
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    // console.log(req.body);
+    try {
+        const user = await User.findOne({_id:req.user[0]._id});
+        let currTotal = parseInt(user.totalExpense);
+
+        const expense = new Expense({...req.body , userId:req.user[0]._id},{session});
+        //console.log(expense)
+        
+        
+        // Update the user's totalExpense
         currTotal = currTotal + parseInt(expense.amount);
-        await User.update(
-            {totalExpense:currTotal},
-            {where:{id:req.user.id},transaction:t}
-        )
-        //will only result changes in the database if it is committed
-        await t.commit();
-        // console.log(expense);
+       
+        await User.findByIdAndUpdate({_id: req.user[0]._id}, { totalExpense: currTotal }, { session });
+        await expense.save();
+        // Commit the transaction
+        await session.commitTransaction();
+
         res.status(201).json(expense);
-    }
-    catch(err){
-        //rolls back the changes
-        await t.rollback();
+    } catch (err) {
+        // If an error occurs, abort the transaction
+        await session.abortTransaction();
         console.log(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    } finally {
+        // End the session
+        session.endSession();
     }
-}
+};
+
 exports.editExpense = async (req,res) =>{
     const expenseId = req.params.id;
     try{
-        const expense = await req.user.getExpenses({where: {id:expenseId}});
-        //console.log(expense)
-        res.json(expense[0]);
+        const expense = await Expense.findOne({_id:expenseId});
+        console.log(expense)
+        res.json(expense);
     }
     catch(err){console.log(err);}
 
 }
 exports.deleteExpense = async (req,res) =>{
     const expenseId = req.params.id;
-    const t =await sequelize.transaction();
+    const session = await mongoose.startSession();
+    session.startTransaction();
     try{
-        const expense = await req.user.getExpenses({where : {id:expenseId}});
-        let currTotal = parseInt(req.user.totalExpense);
+        const expense = await Expense.findOne( {_id:expenseId});
+        const user = await User.findOne({_id:req.user[0]._id});
+        let currTotal = parseInt(user.totalExpense);
         
         //changing the user's total expenses
-        currTotal-=expense[0].amount;
-        await User.update(
-            {totalExpense:currTotal},
-            {where:{id:req.user.id},transaction:t}
-        )
+        currTotal-=expense.amount;
+        await User.findByIdAndUpdate({_id: req.user[0]._id}, { totalExpense: currTotal }, { session });
         //console.log(expense[0]);
-        await expense[0].destroy({ transaction: t });
-        await t.commit();
+        await Expense.findByIdAndDelete( {_id:expenseId});
+        await session.commitTransaction();        
         res.sendStatus(200);
     }
     catch(err){
-        await t.rollback();
+        await session.abortTransaction();
         console.log(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }finally {
+        // End the session
+        session.endSession();
     }
 }

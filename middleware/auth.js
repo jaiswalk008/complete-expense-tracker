@@ -8,7 +8,8 @@ const authenticate = async (req,res,next) =>{
          
         const result = jwt.verify(token, process.env.JWT_SECRET_KEY);
         // console.log('userId :' + result.userId);
-        const user = await User.findByPk(result.userId);
+        const user = await User.find({_id:result.userId});
+        // console.log(user);
         req.user = user;
         next();
     }
