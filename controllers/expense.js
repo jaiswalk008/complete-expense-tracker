@@ -13,9 +13,9 @@ exports.getExpense = async (req,res) =>{
             .skip((page - 1) * rows)
             .limit(rows);
         // console.log(expenses);
-        count = await Expense.count({ userId:req.user });
+        const count = await Expense.count({ userId:req.user });
         
-        // console.log(expenses);
+        // console.log(count);
         res.status(200).json({"expense":expenses , "premium":req.user.premium,
         pageData: {
             currentPage: page,

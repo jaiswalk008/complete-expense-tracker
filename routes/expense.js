@@ -1,7 +1,8 @@
-const expenseController = require('../controllers/expenseController');
+const expenseController = require('../controllers/expense');
 const express = require('express');
 const router = express.Router();
 const userAuthentication  = require('../middleware/auth');
+
 //route for getting the expenses
 router.get('/getExpense',userAuthentication,expenseController.getExpense);
 //route for adding the expense

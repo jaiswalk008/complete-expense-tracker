@@ -23,10 +23,6 @@ const user = new Schema({
         type: Boolean,
         default: false
     },
-    // orders: {
-    //     type: [Order.schema],
-    //     default: []   
-    // }
 })
 
 

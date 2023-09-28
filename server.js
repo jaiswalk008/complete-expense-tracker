@@ -8,16 +8,16 @@ const path = require('path');
 const mongoose = require('mongoose');
 
 //importing routes
-const userRoutes = require('./routes/userRoutes');
-const expenseRoutes = require('./routes/expenseRoutes');
+const userRoutes = require('./routes/user');
+const expenseRoutes = require('./routes/expense');
 const purchaseRoutes = require('./routes/purchase');
-const premiumRoutes = require('./routes/premiumRoutes');
+const premiumRoutes = require('./routes/premium');
 server.use(cors());
 
 server.use(bodyParser.urlencoded({extended:false}));
 server.use(bodyParser.json({extended:false}));
 
-const User = require('./models/user');
+// const User = require('./models/user');
 // const Expense = require('./models/expense');
 // const Order = require('./models/order');
 // const ResetPassword = require('./models/forgotPasswordRequests')

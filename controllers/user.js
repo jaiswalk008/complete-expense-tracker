@@ -5,7 +5,7 @@ const sib = require('sib-api-v3-sdk');
 const ResetPassword = require('../models/forgotPasswordRequests');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
-const user = require('../models/user');
+
 
 exports.addUser = async (req,res) =>{
     //getting the user details
