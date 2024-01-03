@@ -16,7 +16,8 @@ exports.addUser = async (req,res) =>{
       // console.log(existingmail);
         //if user exist
         if(existingmail){
-            res.json({'userFound':true});
+            throw new Error("Email Already exist!!");
+            console.group('email exists')
         }
         else {
           //encrypting the password
@@ -25,13 +26,16 @@ exports.addUser = async (req,res) =>{
               //we can use const user because const is blocked scope
               const user = new User({...userDetails, password:hash});
               await user.save();
-              console.log(user);
+              // console.log(user);
               res.json(user);
             })
             
         }
     }
-    catch(err){console.log(err)}
+    catch(err){
+      console.log(err)
+      res.status(403).json({message:err.message});
+    }
 }
 function generateAccessToken(id,name){
   return jwt.sign({userId:id} , /*secret key = */ process.env.JWT_SECRET_KEY);
@@ -49,7 +53,7 @@ exports.loginUser = async (req, res) => {
             throw new Error('Something went wrong');
           }
           else if(result===true){
-            res.status(200).json({success: true, message: 'Log in Success' ,token : generateAccessToken(user.id ), "username": user.name});
+            res.status(200).json({success: true,premium:user.premium, message: 'Log in Success' ,token : generateAccessToken(user.id ), "username": user.name});
           }
           else {
             res.status(401).json({success: false, message: 'password incorrect!!'});

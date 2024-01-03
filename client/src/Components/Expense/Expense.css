@@ -1,0 +1,136 @@
+.navbar{
+    background-color: #000000;
+    color:white;
+    margin-bottom: 10px;
+}
+.navbar >main{
+    font-style: italic;
+    margin-left: 10px;
+    font-size: large;
+    font-weight: 500;
+}
+.navbar span {
+    background-color: rgb(207, 155, 130);
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+.logout{
+    background-color:rgb(214, 94, 38) ;
+    margin-right: 5px;
+   
+}
+.logout:hover, .add-expense:hover{
+    background-color:rgb(158, 68, 26) ;
+    color: white;
+}
+.add-expense{
+    background-color:rgb(214, 94, 38) ;
+    width: 100%;
+    font-weight: 500;
+}
+
+#complete{
+    color: rgba(13, 31, 105, 0.606);
+    font-weight: bold;
+    font-style: italic;
+}
+#complete:hover{
+    text-decoration: underline;
+    cursor:pointer;
+}
+#update{
+    color: white;
+    background-color: rgb(172, 128, 107);
+    border: 2px solid rgb(92, 70, 60);
+}
+#update:hover{
+    color: black;
+    background-color: rgb(219, 182, 165);
+}
+.profile-container{
+    width: 500px;
+    margin-left: 50px;
+    font-weight: 500;
+}
+#verify-email{
+    text-align: center;
+    color: white;
+    background-color: rgb(172, 128, 107);
+    width: fit-content;
+    padding:5px 15px 
+}
+#verify-email:hover{
+    cursor: pointer;
+    color: black;
+    background-color: rgb(219, 182, 165);
+    text-decoration: underline;
+}
+.expense-container{
+    border: 2px solid rgb(219, 182, 165);
+    background-color: rgb(228, 222, 219);
+    padding: 20px;
+    width: 400px;
+    font-weight: 500;
+    border-radius: 10px;
+}
+#amount{
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #000000;
+    width: 200px;
+    text-align: center;
+    font-size: 3rem;
+    margin-top: 0;
+    font-weight: 500;
+}
+.form-control:focus ,.form-select:focus{
+    border-color: rgb(0, 0, 0) !important;
+    box-shadow: 0 0 0 0.15rem rgb(0, 0, 0) !important;
+}
+#amount:focus{
+    border-color: rgb(0, 0, 0)   !important;
+    box-shadow: 0 0 0 0.25rem rgb(0, 0, 0) !important;
+}
+.container{
+    border: 2px solid rgb(219, 182, 165);
+    margin-top: 20px;
+    border-radius: 10px ;
+    padding: 10px;
+}
+.expenses-container{
+    display: flex;
+    justify-content:flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+@media only screen and (max-width: 768px) {
+    /* Apply styles for tablet and mobile devices */
+    .expenses-container {
+      justify-content: center;
+    }
+    .expenses-container{
+        width: 350px;
+        margin: 5px;
+    }
+  }
+.expense-card{
+    border: 2px solid rgb(214, 94, 38);
+    border-radius: 8px;
+    text-transform: capitalize;
+}
+.expense-card> .navbar{
+    background-color: rgb(214, 94, 38);
+    width: fit-content;
+    padding: 8px;
+    color: wheat;
+    font-size: 1.3rem;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+}   
+.amount{
+    font-size: 1.5rem;
+    font-weight: 900 !important;
+    font-family: 'Courier New', Courier, monospace;
+}

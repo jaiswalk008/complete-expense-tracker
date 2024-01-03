@@ -4,27 +4,18 @@ const mongoose = require('mongoose');
 const Expense = require('../models/expense');
 
 exports.getExpense = async (req,res) =>{
-    const page = +req.query.page || 1;
-    const rows = +req.query.rows; 
+    // const page = +req.query.page || 1;
+    // const rows = +req.query.rows; 
     
     try{
         
         const expenses = await Expense.find({ userId:req.user })
-            .skip((page - 1) * rows)
-            .limit(rows);
         // console.log(expenses);
-        const count = await Expense.count({ userId:req.user });
+        // const count = await Expense.count({ userId:req.user });
         
         // console.log(count);
-        res.status(200).json({"expense":expenses , "premium":req.user.premium,
-        pageData: {
-            currentPage: page,
-            hasNextPage: rows * page < count,
-            nextPage: page+1,
-            hasPreviousPage: page > 1,
-            previousPage: page - 1
-        }
-        });
+        console.log(req.user[0].premium);
+        res.status(200).json({"expense":expenses , "premium":req.user[0].premium,});
     }
     catch(err){console.log(err);}
 
@@ -40,13 +31,13 @@ exports.addExpense = async (req, res) => {
         let currTotal = parseInt(user.totalExpense);
 
         const expense = new Expense({...req.body , userId:req.user[0]._id},{session});
-        //console.log(expense)
-        
         
         // Update the user's totalExpense
         currTotal = currTotal + parseInt(expense.amount);
        
-        await User.findByIdAndUpdate({_id: req.user[0]._id}, { totalExpense: currTotal }, { session });
+        await User.findByIdAndUpdate({_id: req.user[0]._id},
+            { totalExpense: currTotal }, { session });
+
         await expense.save();
         // Commit the transaction
         await session.commitTransaction();
@@ -65,8 +56,11 @@ exports.addExpense = async (req, res) => {
 
 exports.editExpense = async (req,res) =>{
     const expenseId = req.params.id;
+
+    const expenseDetails = req.body;
+   
     try{
-        const expense = await Expense.findOne({_id:expenseId});
+        const expense = await Expense.updateOne({_id:expenseId},expenseDetails);
         console.log(expense)
         res.json(expense);
     }
@@ -77,10 +71,10 @@ exports.deleteExpense = async (req,res) =>{
     const expenseId = req.params.id;
     const session = await mongoose.startSession();
     session.startTransaction();
+    let currTotal = req.query.total;
+     
     try{
         const expense = await Expense.findOne( {_id:expenseId});
-        const user = await User.findOne({_id:req.user[0]._id});
-        let currTotal = parseInt(user.totalExpense);
         
         //changing the user's total expenses
         currTotal-=expense.amount;

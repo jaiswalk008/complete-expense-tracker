@@ -1,0 +1,53 @@
+.form-container >div{
+    width: 400px;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 100px;
+}
+.title{
+    padding:10px;
+} 
+.form-container{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+.login,.signup{
+    width:400px;
+    text-align: center;
+    background-color: rgb(151, 169, 255);
+    margin-top: 10px;
+    padding: 5px;
+    border: 2px solid rgb(82, 108, 237) ;
+    border-radius: 5px;
+}
+.login >a , .signup >a{
+    text-decoration: none;
+    color: rgb(24, 44, 132);
+}
+.login >a:hover , .signup>a:hover{
+    text-decoration: underline;
+}
+.message-alert{
+    text-align: center;
+    background-color: rgb(151, 169, 255);
+    margin-top: 10px;
+    padding: 5px;
+    color: red;
+    border: 2px solid rgb(82, 108, 237) ;
+    border-radius: 5px;
+}
+.forgot-password{
+    margin-top: 10px;
+    background-color: rgb(35, 139, 139);
+    color: wheat;
+    padding: 8px 8px;
+    width: fit-content;
+}
+.forgot-password:hover{
+    cursor: pointer;
+    background-color: rgb(21, 90, 90);
+    color: white;
+}

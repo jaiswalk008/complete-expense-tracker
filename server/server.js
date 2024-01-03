@@ -58,7 +58,7 @@ async function startServer (){
     try{
        
         await mongoose.connect(process.env.MONGODB_SRV);
-        server.listen(process.env.PORT || 3000);
+        server.listen(process.env.PORT || 4000);
     }catch(err){console.log(err);}
 }
 startServer();
