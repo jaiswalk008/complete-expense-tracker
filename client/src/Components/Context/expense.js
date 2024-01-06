@@ -63,6 +63,7 @@ export const fetchExpenseList = (token) =>{
                     dispatch(expenseActions.addTotal(element.amount));
                 })            
                 dispatch(expenseActions.setExpenseList(res.data.expense));
+                console.log('hello')
             }
             if(res.data.premium) dispatch(expenseActions.setPremium());
         }

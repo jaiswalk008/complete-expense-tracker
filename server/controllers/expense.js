@@ -14,7 +14,7 @@ exports.getExpense = async (req,res) =>{
         // const count = await Expense.count({ userId:req.user });
         
         // console.log(count);
-        console.log(req.user[0].premium);
+        // console.log(req.user[0].premium);
         res.status(200).json({"expense":expenses , "premium":req.user[0].premium,});
     }
     catch(err){console.log(err);}
@@ -61,7 +61,7 @@ exports.editExpense = async (req,res) =>{
    
     try{
         const expense = await Expense.updateOne({_id:expenseId},expenseDetails);
-        console.log(expense)
+        // console.log(expense)
         res.json(expense);
     }
     catch(err){console.log(err);}

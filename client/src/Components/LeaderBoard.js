@@ -18,13 +18,13 @@ const LeaderBoard = () =>{
         fetchLeaderBoard();
     },[LeaderBoardList])
     return (
-       <>
+       <div id="leaderboard-div">
         <Header/>
-        <div id="leaderboard-div" className={mode==='light' ?"container":"container  bg-dark" }>
+        <div className={mode==='light' ?"container":"container  bg-dark" }>
             
             <h1>LeaderBoard</h1>
             <hr ></hr>
-            <table className={mode==='light' ?"table table-hover":"table table-dark border-light  table-hover" }> 
+            <table className={mode==='light' ?"table table-hover":"table table-dark border-light table-hover" }> 
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -46,7 +46,7 @@ const LeaderBoard = () =>{
             </table>
 
         </div>
-       </>
+       </div>
     )
 }
 export default LeaderBoard;

@@ -87,6 +87,9 @@ const Header = (props) =>{
                         <button className='btn btn-primary mb-1 me-3' onClick={() => history.push('/expense') }>Home</button>
                         </li>
                         {premium  &&( <li className="nav-item text-center">
+                        <button className='btn btn-primary mb-1 me-3' onClick={() => history.push('/dashboard')}>DashBoard</button>
+                        </li>)}
+                        {premium  &&( <li className="nav-item text-center">
                         <button className='btn btn-primary mb-1 me-3' onClick={() => history.push('/leaderboard')}>LeaderBoard</button>
                         </li>)}
                         

@@ -32,8 +32,7 @@ const Login = () => {
             localStorage.setItem('user-name',res.data.username);
             if(res.data.premium)dispatch(expenseActions.setPremium());
             history.push('/expense');
-            // console.log('history')
-            // console.log(history)
+            
         } catch (err) {
             console.log(err);
             setErrorMessage(err.response.data.message);
@@ -61,7 +60,7 @@ const Login = () => {
                 <Input id="email" label="Email" type="email" value={email} onChange={emailChangeHandler} />
                 <Input id="password" label="Password" type="password" value={password} onChange={passwordChangeHandler} />
                 
-                <button className='btn w-100 mt-1 btn-primary'>Login</button>
+                <button className='btn w-100 mt-1 btn-dark'>Login</button>
             </form>
             {errorMessage.length>0 && <p className='message-alert'>{errorMessage}</p>}
             <p className='forgot-password' onClick={forgotPasswordHandler}>Forgot Password</p>

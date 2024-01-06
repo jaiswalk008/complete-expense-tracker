@@ -1,7 +1,8 @@
 body,html{
     height: 100% !important;
 }
-#leaderboard-div{
+#leaderboard-div,#dashboard-div{
     height: 100vh;
-    
 }
+ 
+ 

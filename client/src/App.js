@@ -6,6 +6,7 @@ import Signup from './Components/User/Signup';
 import { Route , Redirect} from 'react-router-dom/cjs/react-router-dom.min';
 import { useSelector } from 'react-redux';
 import LeaderBoard from './Components/LeaderBoard';
+import DashBoard from './Components/DashBoard/DashBoard';
 function App() {
   const {token} = useSelector(state => state.auth);
   const {pageStyle} = useSelector(state => state.theme);
@@ -25,7 +26,10 @@ function App() {
           {token.length>0 ? <Expense/>
           :<Redirect to="/login"></Redirect> }
       </Route>
-     
+      <Route path='/dashboard'>
+          {token.length>0 ? <DashBoard/>
+          :<Redirect to="/login"></Redirect> }
+      </Route>
       
     </div>
   );
