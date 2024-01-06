@@ -5,6 +5,7 @@ const initialThemeState = {
     pageStyle:{
         backgroundColor:"white",
         color:'black',
+         
     },
     formStyle :{
         backgroundColor:"rgb(228, 222, 219)",
@@ -26,6 +27,7 @@ const themeSlice = createSlice({
                 state.pageStyle={
                     backgroundColor:"#0e152b",
                     color:'white',
+            
                 }
             }
             else{

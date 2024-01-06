@@ -4,9 +4,11 @@ import { themeActions , expenseActions } from '../Context/store';
 import generateCSV from '../Expense/generateCSV';
 // import rzpTransaction from '../Helpers/razorPay';
 import { useCallback } from 'react';
+import {useHistory} from 'react-router-dom';
 import axios from 'axios';
 const Header = (props) =>{
     const dispatch = useDispatch();
+    const history = useHistory();
     const {mode} = useSelector(state => state.theme);
     // const {token} = useSelector(state => state.auth);
     const {premium, expenseList,total} = useSelector(state=> state.expense);
@@ -20,9 +22,10 @@ const Header = (props) =>{
         generateCSV(expenseList);
     }
     const logoutHandler = () =>{
-        props.logoutHandler();
+        // props.logoutHandler();
         dispatch(expenseActions.resetExpenseState());
         dispatch(themeActions.resetThemeState());
+        history.push('/login');
     }
     const rzpTransaction = useCallback(async function rzpTransaction(e){
         // let Razorpay;
@@ -63,26 +66,45 @@ const Header = (props) =>{
     },[dispatch]);
     const premiumHandler =async () =>{
         await rzpTransaction();
-        // console.log(result + 'of rzp transaction');
-        // console.log(localStorage.getItem('premium'))
-        // if(localStorage.getItem('premium')==='true') {
-        //     dispatch(expenseActions.setPremium())
-        //     console.log('premium user')
-        // };
     }
+  
     return (
-        <nav className="navbar">
+        
+        <nav className="navbar navbar-expand-lg bg-gradient navbar-dark bg-dark">
             <main>Welcome to Expense Tracker</main>
-            <div>
-                {/* {console.log(premium)} */}
-                {premium  &&  <button className='btn me-3' onClick={changeThemeMode}>{mode==='light' ? '☀️' : '🌑'}</button>}
-                {premium  && <button className='btn btn-primary me-3' onClick={downloadExpenses}>Download Expense Report</button>}
-                {!premium && <button onClick={premiumHandler} className='btn me-2 btn-danger'>Activate Premium</button>}
-                {/*<span>Your profile is Incomplete <span onClick={completeProfileHandler} id="complete">Complete now</span></span> */}
-                <button className='btn logout'  onClick={logoutHandler}>Logout</button>
+            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span className="navbar-toggler-icon"></span>
+            </button>
+        
+            <div className="collapse navbar-collapse d-lg-flex justify-content-end " id="navbarSupportedContent">
+                <div>
+                    <ul className="navbar-nav ml-auto ">
+                        {premium && <li className="nav-item text-center">
+                        <button className='btn mb-1 me-3' onClick={changeThemeMode}>{mode==='light' ? '☀️' : '🌑'}</button>
+                        </li>}
+                        <li className="nav-item text-center">
+                        <button className='btn btn-primary mb-1 me-3' onClick={() => history.push('/expense') }>Home</button>
+                        </li>
+                        {premium  &&( <li className="nav-item text-center">
+                        <button className='btn btn-primary mb-1 me-3' onClick={() => history.push('/leaderboard')}>LeaderBoard</button>
+                        </li>)}
+                        
+                        {!premium && <li className="nav-item text-center">
+                        <button onClick={premiumHandler} className='btn mb-1 me-2 btn-danger'>Activate Premium</button>
+                        </li>}
+                        {premium && <li className="nav-item text-center">
+                        <button className='btn btn-primary mb-1 me-3' onClick={downloadExpenses}>Download Expense Report</button>
+                        </li>}
+                        <li className="nav-item text-center">
+                        <button className='btn logout'  onClick={logoutHandler}>Logout</button>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            
         </nav>
+       
+    
     );
 }
 export default Header;

@@ -22,8 +22,6 @@ const ExpenseList = (props) => {
                     return <ExpenseCard key={expense._id} id={expense._id} amount={expense.amount}
                     category={expense.category} expenseName= {expense.expenseName} description={expense.description} />
                 })}
-                
-
             </div>
         </div>
     )

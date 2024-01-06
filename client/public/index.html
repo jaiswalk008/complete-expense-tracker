@@ -14,45 +14,8 @@
   <body>
 
     <div id="root"></div>
-    <!-- <script>
-      const razorpayBtn = document.getElementById('activate-premium');
-      if(razorpayBtn) razorpayBtn.addEventListener('click',rzpTransaction)
-      async function rzpTransaction(e){
-        // let Razorpay;
-        
-        const token = localStorage.getItem('token');
-        let result =false;
-        const response = await axios.get('http://localhost:4000/purchase/premiummembership',{headers:{'Authorization':token}});
-        //console.log(response);
-        //we dont pass the amount from frontend because its easily editable
-        const options ={
-            "key":response.data.key_id,
-            "order_id":response.data.order.id,
-            //this handler function will handle the success payment
-            "handler":async function (response){
-                await axios.post('http://localhost:4000/purchase/updatetransactionstatus',{
-                    order_id:options.order_id,
-                    payment_id:response.razorpay_payment_id,
-                    success:true
-                },{headers:{'Authorization':token}});
-                localStorage.setItem('premium',true);
-               
-            }
-        }
-        const rzp = new Razorpay(options);
-        rzp.open();
-        e.preventDefault();
-        //if payment fails below code will be executed
-        rzp.on('payment.failed' ,async  function(response){
-            const res = await axios.post('http://localhost:4000/purchase/updatetransactionstatus',{
-                    order_id:options.order_id,
-                    payment_id:response.razorpay_payment_id,
-                    success:false
-                },{headers:{'Authorization':token}});
-            alert('something went wrong')
-        })
-        
-    }
-    </script> -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </body>
 </html>

@@ -12,7 +12,8 @@ const generateCSV = (expenses) => {
   // Create a link element to download the CSV file
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
-  link.download = 'expenses.csv';
+  const username = localStorage.getItem('user-name');
+  link.download = username+'-expenses.csv';
   document.body.appendChild(link);
 
   // Trigger a click event to download the file

@@ -10,14 +10,14 @@ const path = require('path');
 exports.addUser = async (req,res) =>{
     //getting the user details
     const userDetails = {...req.body};
-    console.log(userDetails);
+    // console.log(userDetails);
     try{
       const existingmail = await User.findOne({'email': userDetails.email});
       // console.log(existingmail);
         //if user exist
         if(existingmail){
             throw new Error("Email Already exist!!");
-            console.group('email exists')
+            // console.group('email exists')
         }
         else {
           //encrypting the password
@@ -98,7 +98,7 @@ exports.loginUser = async (req, res) => {
       if(user){
         
         user = {...user._doc};
-        console.log(user);
+        // console.log(user);
         try {
           // res.sendFile(path.join(__dirname,'..','views','mailSent.html'));
           const resetPassword = new  ResetPassword({ id: uuid, userId: user._id });
@@ -139,7 +139,7 @@ exports.loginUser = async (req, res) => {
    
     const saltRounds = 10;
     const result  = await ResetPassword.find({id:req.body.uuid});
-    console.log(result);
+    // console.log(result);
     // const user = await User.find({_id:result.userId});
     
     bcrypt.hash(password,saltRounds, async (err,hash)=>{
@@ -150,7 +150,7 @@ exports.loginUser = async (req, res) => {
         await User.updateOne({_id:result.userid},{password:hash})
         await ResetPassword.updateOne({id:req.body.uuid},{isActive:false});
         
-        console.log('password updated');
+        // console.log('password updated');
       } catch (err) {
         console.log(err);
         res.status(500).json({ message: 'Error occurred while updating the password.' });
