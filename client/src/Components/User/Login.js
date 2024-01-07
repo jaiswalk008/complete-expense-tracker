@@ -39,15 +39,6 @@ const Login = () => {
         }
     }
 
-    const forgotPasswordHandler = async () =>{
-        try {
-            await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key='+process.env.REACT_APP_AUTH_KEY,
-            {requestType:"PASSWORD_RESET" ,
-        email:email})
-        } catch (err) {
-            setErrorMessage(err.response.data.message);
-        }
-    }
     return (
         <>
             <header className="bg-dark text-light">
@@ -63,7 +54,7 @@ const Login = () => {
                 <button className='btn w-100 mt-1 btn-dark'>Login</button>
             </form>
             {errorMessage.length>0 && <p className='message-alert'>{errorMessage}</p>}
-            <p className='forgot-password' onClick={forgotPasswordHandler}>Forgot Password</p>
+            <p className='forgot-password'><Link to="/forgotpassword">Forgot Password?</Link></p>
             </div>
             <p className='signup'><Link to="/signup">Don't have an account? Signup</Link></p>
         </div>

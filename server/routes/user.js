@@ -6,10 +6,8 @@ router.post('/signup',userControllers.addUser);
 
 router.post('/login',userControllers.loginUser);
 
-router.post('/password/forgotpassword',userControllers.forgotPassword);
+router.post('/forgotpassword',userControllers.forgotPassword);
 
-router.get('/password/resetpassword/:uuid',userControllers.resetPassword);
-
-router.post('/password/updatepassword',userControllers.updatePassword);
-
+router.post('/updatepassword',userControllers.updatePassword);
+router.get('/checkLink/:uuid',userControllers.checkLink);
 module.exports = router;

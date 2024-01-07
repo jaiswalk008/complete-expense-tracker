@@ -31,13 +31,11 @@
     text-decoration: underline;
 }
 .message-alert{
+    border: 1px solid #e6db55;
+    background-color: #ffffe0;
+    padding: 15px 30px 15px 15px;
+    margin: 20px 0;
     text-align: center;
-    background-color: rgb(151, 169, 255);
-    margin-top: 10px;
-    padding: 5px;
-    color: red;
-    border: 2px solid rgb(82, 108, 237) ;
-    border-radius: 5px;
 }
 .forgot-password{
     margin-top: 10px;
@@ -45,6 +43,10 @@
     color: wheat;
     padding: 8px 8px;
     width: fit-content;
+}
+.forgot-password a{
+    color: white;
+    text-decoration: none;
 }
 .forgot-password:hover{
     cursor: pointer;

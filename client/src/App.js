@@ -7,6 +7,9 @@ import { Route , Redirect} from 'react-router-dom/cjs/react-router-dom.min';
 import { useSelector } from 'react-redux';
 import LeaderBoard from './Components/LeaderBoard';
 import DashBoard from './Components/DashBoard/DashBoard';
+import ForgotPassword from './Components/User/ForgotPassword';
+import MailSent from './Components/User/MailSent';
+import ResetPassword from './Components/User/ResetPassword';
 function App() {
   const {token} = useSelector(state => state.auth);
   const {pageStyle} = useSelector(state => state.theme);
@@ -30,6 +33,9 @@ function App() {
           {token.length>0 ? <DashBoard/>
           :<Redirect to="/login"></Redirect> }
       </Route>
+      <Route path="/forgotpassword"><ForgotPassword/></Route>
+      <Route path="/mailsent"><MailSent/></Route>
+      <Route path="/resetpassword/:uuid"><ResetPassword/></Route>
       
     </div>
   );

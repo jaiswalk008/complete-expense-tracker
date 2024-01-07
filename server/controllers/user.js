@@ -74,7 +74,6 @@ exports.loginUser = async (req, res) => {
     //getting a new uuid
     const uuid = uuidv4();
     
-    
     const defaultClient = sib.ApiClient.instance;
     var apiKey = defaultClient.authentications['api-key'];
     apiKey.apiKey = process.env.EMAIL_API_KEY;
@@ -89,7 +88,7 @@ exports.loginUser = async (req, res) => {
             email: req.body.email
         }], 
         subject : 'Password Reset',
-        htmlContent: `<html><head></head><body><a  href="http://localhost:3000/password/resetpassword/${uuid}">Click to reset your password</a>`
+        htmlContent: `<html><head></head><body><a  href="http://localhost:3000/resetpassword/${uuid}">Click to reset your password</a>`
     };
     
     try{
@@ -116,27 +115,45 @@ exports.loginUser = async (req, res) => {
   }
   //controller which recieves the request when the user clicks on the reset
   //password email link
-  exports.resetPassword =async (req,res) =>{
-    const uuid = req.params.uuid;
+  // exports.resetPassword =async (req,res) =>{
+  //   const uuid = req.params.uuid;
    
-    const result = await ResetPassword.findOne({id:uuid});
+  //   const result = await ResetPassword.findOne({id:uuid});
 
-    if(result && result.isActive){
-      res.sendFile(path.join(__dirname,'..','public','user','resetPassword.html'));
+  //   if(result && result.isActive){
+  //     res.sendFile(path.join(__dirname,'..','public','user','resetPassword.html'));
       
-    }
+  //   }
       
       
-    else{
-      const htmlContent = `<html><head></head><body><h1>This Link has already been used.</h1><a href="http://localhost:3000/user/passwordRecovery.html">Click here to reset password</body></html>`;
+  //   else{
+  //     const htmlContent = `<html><head></head><body><h1>This Link has already been used.</h1><a href="http://localhost:3000/user/passwordRecovery.html">Click here to reset password</body></html>`;
       
-      res.send(htmlContent);    
-    }
-  }
+  //     res.send(htmlContent);    
+  //   }
+  // }
   //controller for updating the password
+  
+  exports.checkLink = async (req,res) =>{
+    const uuid = req.params.uuid;
+    ;
+    try{
+      const result = await ResetPassword.findOne({id:uuid});
+     
+      
+      if(result && result.isActive){
+        res.json({message:'link valid'});
+      }
+      else{
+        res.json({message:'link used'});
+      }
+    }
+    catch(err) {console.log(err)}
+  }
+  
   exports.updatePassword = async (req,res)=>{
     const password = req.body.password;
-   
+    console.log(password);
     const saltRounds = 10;
     const result  = await ResetPassword.find({id:req.body.uuid});
     // console.log(result);
@@ -147,10 +164,12 @@ exports.loginUser = async (req, res) => {
         console.log(err);
       }
       try {
-        await User.updateOne({_id:result.userid},{password:hash})
+        console.log(result[0]);
+        await User.findByIdAndUpdate({_id:result[0].userId},{password:hash})
         await ResetPassword.updateOne({id:req.body.uuid},{isActive:false});
         
-        // console.log('password updated');
+        console.log('password updated');
+        res.json({message:'password updated'});
       } catch (err) {
         console.log(err);
         res.status(500).json({ message: 'Error occurred while updating the password.' });
