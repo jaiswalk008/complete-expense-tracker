@@ -39,7 +39,8 @@ exports.addExpense = async (req, res) => {
             { totalExpense: currTotal }, { session });
         const multi = client.multi();
         multi.hdel(`expenses:${req.user[0]._id}`,'expenses');
-        multi.zadd('expenseRanking' , currTotal  , req.user[0]._id.toString());
+        // multi.zadd('expenseRanking' , currTotal  , req.user[0]._id.toString());
+        multi.del('leaderboardResults');
         multi.exec((err, replies) => {
             if (err) {
                 console.error('Transaction failed:', err);
@@ -71,16 +72,16 @@ exports.editExpense = async (req,res) =>{
     const expenseDetails = req.body;
    
     try{
-        const expense = await Expense.findOne( {_id:expenseId});
+        // const expense = await Expense.findOne( {_id:expenseId});
         await Expense.updateOne({_id:expenseId},expenseDetails);
         const result = await client.hget(`expenses:${req.user[0]._id}`,'expenses');
         const expenseData = JSON.parse(result);
-        if(expense.amount!=expenseDetails.amount){
-            const currTotal = req.user[0].totalExpense - expense.amount + +expenseDetails.amount;
-            console.log(currTotal);
-            await client.zadd('expenseRanking' , +currTotal , req.user[0]._id.toString());
+        // if(expense.amount!=expenseDetails.amount){
+        //     const currTotal = req.user[0].totalExpense - expense.amount + +expenseDetails.amount;
+        //     console.log(currTotal);
+        //     await client.zadd('expenseRanking' , +currTotal , req.user[0]._id.toString());
 
-        }
+        // }
         expenseData.forEach((expense) =>{
             if(expense._id.toString()===expenseId.toString()){
                 console.log('expense found');
@@ -90,6 +91,7 @@ exports.editExpense = async (req,res) =>{
                 expense.description=expenseDetails.description;
             }
         })
+        await client.del('leaderboardResults');
         await client.hset(`expenses:${req.user[0]._id}`,{'expenses':JSON.stringify(expenseData) })
         
         res.json({message:'edit successful'});
@@ -110,8 +112,9 @@ exports.deleteExpense = async (req,res) =>{
         const expenseData = JSON.parse(result).filter(expense => expense._id.toString()!== expenseId);
         multi.hset(`expenses:${req.user[0]._id}`,{'expenses':JSON.stringify(expenseData) })
         currTotal-=expense.amount;
-        multi.zadd('expenseRanking' , +currTotal , req.user[0]._id.toString());
-        
+        // multi.zadd('expenseRanking' , +currTotal , req.user[0]._id.toString());
+        multi.del('leaderboardResults');
+
         multi.exec((err, replies) => {
             if (err) {
                 console.error('Transaction failed:', err);

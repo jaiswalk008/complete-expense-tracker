@@ -16,7 +16,7 @@ const LeaderBoard = () =>{
     },[])
     useEffect(() =>{
         fetchLeaderBoard();
-    },[LeaderBoardList])
+    },[fetchLeaderBoard])
     return (
        <div id="leaderboard-div">
         <Header/>
