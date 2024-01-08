@@ -4,14 +4,13 @@ const mongoose = require('mongoose');
 const Expense = require('../models/expense');
 const client = require('../utils/client');
 exports.getExpense = async (req,res) =>{
-    // const page = +req.query.page || 1;
-    // const rows = +req.query.rows; 
-    
+
     try{
-         
+        
         const expenseData = await client.hget(`expenses:${req.user[0]._id}`,'expenses')
+        await client.zadd('expenseRanking' , +req.user[0].totalExpense , req.user[0]._id.toString());
         // console.log(expenseData);
-        if(expenseData) return res.json({"expense":JSON.parse(expenseData)})
+        if(expenseData) return res.json({"expense":JSON.parse(expenseData) ,"premium":req.user[0].premium})
         // console.log(count);
         // console.log(req.user[0].premium);
         const expenses = await Expense.find({ userId:req.user })
@@ -35,9 +34,21 @@ exports.addExpense = async (req, res) => {
         
         // Update the user's totalExpense
         currTotal = currTotal + parseInt(expense.amount);
-       
+        
         await User.findByIdAndUpdate({_id: req.user[0]._id},
             { totalExpense: currTotal }, { session });
+        const multi = client.multi();
+        multi.hdel(`expenses:${req.user[0]._id}`,'expenses');
+        multi.zadd('expenseRanking' , currTotal  , req.user[0]._id.toString());
+        multi.exec((err, replies) => {
+            if (err) {
+                console.error('Transaction failed:', err);
+                return;
+            } else {
+                console.log('Transaction succeeded. Replies:', replies);
+            }
+            
+        });
 
         await expense.save();
         // Commit the transaction
@@ -57,13 +68,31 @@ exports.addExpense = async (req, res) => {
 
 exports.editExpense = async (req,res) =>{
     const expenseId = req.params.id;
-
     const expenseDetails = req.body;
    
     try{
-        const expense = await Expense.updateOne({_id:expenseId},expenseDetails);
-        // console.log(expense)
-        res.json(expense);
+        const expense = await Expense.findOne( {_id:expenseId});
+        await Expense.updateOne({_id:expenseId},expenseDetails);
+        const result = await client.hget(`expenses:${req.user[0]._id}`,'expenses');
+        const expenseData = JSON.parse(result);
+        if(expense.amount!=expenseDetails.amount){
+            const currTotal = req.user[0].totalExpense - expense.amount + +expenseDetails.amount;
+            console.log(currTotal);
+            await client.zadd('expenseRanking' , +currTotal , req.user[0]._id.toString());
+
+        }
+        expenseData.forEach((expense) =>{
+            if(expense._id.toString()===expenseId.toString()){
+                console.log('expense found');
+                expense.expenseName=expenseDetails.expenseName;
+                expense.amount=expenseDetails.amount;
+                expense.category=expenseDetails.category;
+                expense.description=expenseDetails.description;
+            }
+        })
+        await client.hset(`expenses:${req.user[0]._id}`,{'expenses':JSON.stringify(expenseData) })
+        
+        res.json({message:'edit successful'});
     }
     catch(err){console.log(err);}
 
@@ -73,12 +102,26 @@ exports.deleteExpense = async (req,res) =>{
     const session = await mongoose.startSession();
     session.startTransaction();
     let currTotal = req.query.total;
-     
+    
     try{
         const expense = await Expense.findOne( {_id:expenseId});
-        
-        //changing the user's total expenses
+        const multi = client.multi();
+        const result = await client.hget(`expenses:${req.user[0]._id}`,'expenses');
+        const expenseData = JSON.parse(result).filter(expense => expense._id.toString()!== expenseId);
+        multi.hset(`expenses:${req.user[0]._id}`,{'expenses':JSON.stringify(expenseData) })
         currTotal-=expense.amount;
+        multi.zadd('expenseRanking' , +currTotal , req.user[0]._id.toString());
+        
+        multi.exec((err, replies) => {
+            if (err) {
+                console.error('Transaction failed:', err);
+                return;
+            } else {
+                console.log('Transaction succeeded. Replies:', replies);
+            }
+            
+        });
+        
         await User.findByIdAndUpdate({_id: req.user[0]._id}, { totalExpense: currTotal }, { session });
         //console.log(expense[0]);
         await Expense.findByIdAndDelete( {_id:expenseId});
