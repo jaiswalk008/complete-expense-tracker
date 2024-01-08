@@ -2,19 +2,20 @@
 const User = require('../models/user');
 const mongoose = require('mongoose');
 const Expense = require('../models/expense');
-
+const client = require('../utils/client');
 exports.getExpense = async (req,res) =>{
     // const page = +req.query.page || 1;
     // const rows = +req.query.rows; 
     
     try{
-        
-        const expenses = await Expense.find({ userId:req.user })
-        // console.log(expenses);
-        // const count = await Expense.count({ userId:req.user });
-        
+         
+        const expenseData = await client.hget(`expenses:${req.user[0]._id}`,'expenses')
+        // console.log(expenseData);
+        if(expenseData) return res.json({"expense":JSON.parse(expenseData)})
         // console.log(count);
         // console.log(req.user[0].premium);
+        const expenses = await Expense.find({ userId:req.user })
+        await client.hset(`expenses:${req.user[0]._id}`,{'expenses':JSON.stringify(expenses) })
         res.status(200).json({"expense":expenses , "premium":req.user[0].premium,});
     }
     catch(err){console.log(err);}
