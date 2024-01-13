@@ -33,7 +33,7 @@ server.use('/premium',premiumRoutes);
 
 async function startServer (){
     try{
-       
+       console.log('server running')
         await mongoose.connect(process.env.MONGODB_SRV);
         server.listen(process.env.PORT || 4000);
     }catch(err){console.log(err);}
